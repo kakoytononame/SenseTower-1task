@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\build\SenseWebApi1.props" />
+</Project>

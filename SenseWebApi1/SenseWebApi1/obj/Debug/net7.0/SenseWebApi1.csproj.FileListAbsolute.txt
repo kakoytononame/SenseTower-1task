@@ -36,3 +36,7 @@ C:\Users\тимур\source\repos\pricheson\SenseTower-1task\SenseWebApi1\SenseWe
 C:\Users\тимур\source\repos\pricheson\SenseTower-1task\SenseWebApi1\SenseWebApi1\obj\Debug\net7.0\SenseWebApi1.genruntimeconfig.cache
 C:\Users\тимур\source\repos\pricheson\SenseTower-1task\SenseWebApi1\SenseWebApi1\obj\Debug\net7.0\ref\SenseWebApi1.dll
 C:\Users\тимур\source\repos\pricheson\SenseTower-1task\SenseWebApi1\SenseWebApi1\bin\Debug\net7.0\AutoMapper.Extensions.Microsoft.DependencyInjection.dll
+C:\Users\тимур\source\repos\pricheson\SenseTower-1task\SenseWebApi1\SenseWebApi1\bin\Debug\net7.0\Swashbuckle.AspNetCore.Annotations.dll
+C:\Users\тимур\source\repos\pricheson\SenseTower-1task\SenseWebApi1\SenseWebApi1\bin\Debug\net7.0\SenseWebApi1.xml
+C:\Users\тимур\source\repos\pricheson\SenseTower-1task\SenseWebApi1\SenseWebApi1\obj\Debug\net7.0\SenseWebApi1.xml
+C:\Users\тимур\source\repos\pricheson\SenseTower-1task\SenseWebApi1\SenseWebApi1\bin\Debug\net7.0\FluentValidation.DependencyInjectionExtensions.dll

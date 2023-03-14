@@ -1,0 +1,109 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>SenseWebApi1</name>
+    </assembly>
+    <members>
+        <member name="P:SenseWebApi1.domain.Dtos.EventDto.EventId">
+            <summary>
+            The name of the product
+            </summary>
+            <example>Men's basketball shoes</example>
+        </member>
+        <member name="P:SenseWebApi1.domain.Entities.Event.EventId">
+            <summary>
+            Id мероприятия
+            </summary>
+        </member>
+        <member name="P:SenseWebApi1.domain.Entities.Event.Beginning">
+            <summary>
+            Момент начала мероприятия
+            </summary>
+        </member>
+        <member name="P:SenseWebApi1.domain.Entities.Event.End">
+            <summary>
+            Момент конца мероприятия
+            </summary>
+        </member>
+        <member name="P:SenseWebApi1.domain.Entities.Event.EventName">
+            <summary>
+            Название мероприятия
+            </summary>
+        </member>
+        <member name="P:SenseWebApi1.domain.Entities.Event.Description">
+            <summary>
+            Описание мероприятия
+            </summary>
+        </member>
+        <member name="P:SenseWebApi1.domain.Entities.Event.ImageId">
+            <summary>
+            Id картинки
+            </summary>
+        </member>
+        <member name="M:SenseWebApi1.Features.MyFeature.MyFeatureController.MainController.CreateEvent(SenseWebApi1.domain.Dtos.EventDto)">
+             <summary>
+             Создание события
+             </summary>
+             <returns></returns>
+             <remarks>
+             Пример входных данных:
+            
+                 POST /events
+                 {
+                    "eventId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",Тип данных:Guid
+                    "beginning": "2023-03-14T16:52:06.478Z",Тип данных:DateTime
+                    "end": "2023-03-14T16:52:06.478Z",Тип данных:DateTime
+                    "eventName": "string",Тип данных:String
+                    "description": "string",Тип данных:String
+                    "imageId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",Тип данных:Guid
+                    "areaId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",Тип данных:Guid
+                 }
+            
+             </remarks>
+             <response code="200">Возвращает id добавленного события </response>
+        </member>
+        <member name="M:SenseWebApi1.Features.MyFeature.MyFeatureController.MainController.ChangeEvent(SenseWebApi1.domain.Dtos.EventDto)">
+             <summary>
+             Изменение события
+             </summary>
+             <returns></returns>
+             <remarks>
+             Пример входных данных:
+            
+                 PUT /events/{eventId}
+                 {
+                    "eventId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",Тип данных:Guid
+                    "beginning": "2023-03-14T16:52:06.478Z",Тип данных:DateTime
+                    "end": "2023-03-14T16:52:06.478Z",Тип данных:DateTime
+                    "eventName": "string",Тип данных:String
+                    "description": "string",Тип данных:String
+                    "imageId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",Тип данных:Guid
+                    "areaId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",Тип данных:Guid
+                 }
+            
+             </remarks>
+             <response code="200">Возвращает данные об измененном событии </response>
+        </member>
+        <member name="M:SenseWebApi1.Features.MyFeature.MyFeatureController.MainController.DeleteEvent(System.Guid)">
+             <summary>
+             Удаление события
+             </summary>
+             <returns></returns>
+             <remarks>
+             Пример входных данных:
+            
+                 PUT /events/{eventId}
+                 eventId Тип данных:Guid
+            
+             </remarks>
+             <response code="200">Возвращает id удаленного события</response>
+        </member>
+        <member name="M:SenseWebApi1.Features.MyFeature.MyFeatureController.MainController.GetEvents">
+            <summary>
+            Получение событий из базы данных
+            </summary>
+            <returns></returns>
+            <response code="200">Возвращает json строку с данными о событиях </response>
+        </member>
+    </members>
+</doc>

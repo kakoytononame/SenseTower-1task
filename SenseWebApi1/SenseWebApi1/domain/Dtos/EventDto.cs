@@ -2,6 +2,10 @@
 {
     public class EventDto
     {
+        /// <summary>
+        /// The name of the product
+        /// </summary>
+        /// <example>Men's basketball shoes</example>
         public Guid EventId { get; set; }
 
         public DateTime Beginning { get; set; }

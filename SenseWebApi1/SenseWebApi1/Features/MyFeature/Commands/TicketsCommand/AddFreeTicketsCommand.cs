@@ -10,5 +10,7 @@ namespace SenseWebApi1.Features.MyFeature.Commands.TicketsCommand
         public Guid? OwnerId { get; set; }
 
         public Guid AreaId { get; set; }
+
+        public int countoftickets { get; set; }
     }
 }

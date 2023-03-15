@@ -21,7 +21,7 @@ namespace SenseWebApi1.Features.MyFeature.Handlers.TicketsHandlers
             };
             try
             {
-                _ticketcontext.AddFreeTickets(ticket, 10);
+                _ticketcontext.AddFreeTickets(ticket,request.countoftickets);
                 return true;
             }
             catch 

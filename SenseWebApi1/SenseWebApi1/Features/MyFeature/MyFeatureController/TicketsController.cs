@@ -18,12 +18,12 @@ namespace SenseWebApi1.Features.MyFeature.MyFeatureController
             _mapper = mapper;
             _mediator = mediator;
         }
-        [HttpPost("tickets")]
         
-        private async Task<IActionResult> AddFreeTickets(TicketDto ticketDto)
+        [HttpPost("tickets")]
+        public async Task<IActionResult> AddFreeTickets(TicketDto ticketDto,int countoftickets)
         {
-            var ticketcommand = _mapper.Map<AddFreeTicketsCommand>(ticketDto);
-            var result = await _mediator.Send(ticketcommand);
+            
+            var result = await _mediator.Send(new AddFreeTicketsCommand() {AreaId=ticketDto.AreaId,countoftickets=countoftickets });
             return Ok(result);
         }
     }

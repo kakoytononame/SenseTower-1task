@@ -25,18 +25,18 @@ namespace SenseWebApi1.Features.MyFeature.Handlers.EventsHandlers
         public async Task<EventDto> Handle(EventUpdateCommand request, CancellationToken cancellationToken)
         {
             Event updateevent = _mapper.Map<EventUpdateCommand, Event>(request);
-            if (request.Beginning > request.End)
-            {
-                throw new ArgumentException("Начало позже окончания");
-            }
-            if (_areaContext.IsHave(request.AreaId) != true || request.AreaId == null)
-            {
-                throw new ArgumentException("Пространство не найдено");
-            }
-            if (_imageContext.IsHave(request.ImageId) != true || request.ImageId == null)
-            {
-                throw new ArgumentException("Изображение не найдено");
-            }
+            //if (request.Beginning > request.End)
+            //{
+            //    throw new ArgumentException("Начало позже окончания");
+            //}
+            //if (_areaContext.IsHave(request.AreaId) != true || request.AreaId == null)
+            //{
+            //    throw new ArgumentException("Пространство не найдено");
+            //}
+            //if (_imageContext.IsHave(request.ImageId) != true || request.ImageId == null)
+            //{
+            //    throw new ArgumentException("Изображение не найдено");
+            //}
             _eventContext.UpdateEvent(updateevent);
             EventDto result = _mapper.Map<Event, EventDto>(updateevent);
             return result;

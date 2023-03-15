@@ -33,6 +33,7 @@ builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(Progr
 builder.Services.AddSingleton<IEventContext,EventContext>();
 builder.Services.AddSingleton<IImageContext, ImageContext>();
 builder.Services.AddSingleton<IAreaContext, AreaContext>();
+builder.Services.AddSingleton<ITicketContext,TicketContext>();
 builder.Services.AddAutoMapper(typeof (EventProfile),typeof (ImageProfile),typeof (AreaProfile));
 AssemblyScanner.FindValidatorsInAssembly(typeof(Program).Assembly)
   .ForEach(item => builder.Services.AddScoped(item.InterfaceType, item.ValidatorType));

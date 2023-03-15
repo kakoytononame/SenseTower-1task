@@ -40,6 +40,19 @@ namespace SenseWebApi1.Context
             
         }
 
+        public void GiveTicketForUser(Guid userId, Guid ticketId)
+        {
+            var ticket=Tickets.Where(p => p.TicketId == ticketId).FirstOrDefault();
+            if (ticket != null)
+            {
+                ticket.OwnerId = userId;
+            }
+            else
+            {
+                throw new ArgumentException("Такой билет не найден");
+            }
+        }
+
         public bool UserHaveTicket(Guid userId, Guid ticketId)
         {
             var ticket = Tickets.Where(p => p.OwnerId == userId).FirstOrDefault();

@@ -4,7 +4,7 @@
     {
         public Guid TicketId { get; set; }
 
-        public Guid OwnerId { get; set; }
+        public Guid ?OwnerId { get; set; }
 
         public Guid AreaId { get; set; }
     }

@@ -25,15 +25,19 @@ namespace SenseWebApi1.Context
                 }
             );
         }
-        public void AddFreeTicket(TicketDto ticketdto)
+        public void AddFreeTickets(TicketDto ticketdto,int CountOfTickets)
         {
-            Tickets.Add(
+            for(int  i = 0; i < CountOfTickets; i++)
+            {
+                Tickets.Add(
                 new Ticket
                 {
-                    TicketId = ticketdto.TicketId,
+                    TicketId = Guid.NewGuid(),
                     AreaId = ticketdto.AreaId,
-                    OwnerId = ticketdto.OwnerId
+                    OwnerId = null
                 });
+            }
+            
         }
 
         public bool UserHaveTicket(Guid userId, Guid ticketId)

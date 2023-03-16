@@ -5,7 +5,7 @@ namespace SenseWebApi1.Context
 {
     public interface ITicketContext
     {
-        void AddFreeTickets(TicketDto ticketdto,int CountOfTickets);
+        void AddFreeTickets(Guid EventId,int CountOfTickets);
         bool UserHaveTicket(Guid userId, Guid ticketId);
         void GiveTicketForUser(Guid userId, Guid ticketId);
     }

@@ -6,6 +6,8 @@
 
         public Guid ?OwnerId { get; set; }
 
-        public Guid AreaId { get; set; }
+        public string ?Place { get; set; }
+
+        public Guid EventId { get; set; }
     }
 }

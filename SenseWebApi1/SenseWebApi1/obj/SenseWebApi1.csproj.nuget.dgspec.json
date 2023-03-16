@@ -1,24 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\тимур\\source\\repos\\pricheson\\SenseTower-1task\\SenseWebApi1\\SenseWebApi1\\SenseWebApi1.csproj": {}
+    "C:\\Users\\timur\\Documents\\GitHub\\SenseTower-1task\\SenseWebApi1\\SenseWebApi1\\SenseWebApi1.csproj": {}
   },
   "projects": {
-    "C:\\Users\\тимур\\source\\repos\\pricheson\\SenseTower-1task\\SenseWebApi1\\SenseWebApi1\\SenseWebApi1.csproj": {
+    "C:\\Users\\timur\\Documents\\GitHub\\SenseTower-1task\\SenseWebApi1\\SenseWebApi1\\SenseWebApi1.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\тимур\\source\\repos\\pricheson\\SenseTower-1task\\SenseWebApi1\\SenseWebApi1\\SenseWebApi1.csproj",
+        "projectUniqueName": "C:\\Users\\timur\\Documents\\GitHub\\SenseTower-1task\\SenseWebApi1\\SenseWebApi1\\SenseWebApi1.csproj",
         "projectName": "SenseWebApi1",
-        "projectPath": "C:\\Users\\тимур\\source\\repos\\pricheson\\SenseTower-1task\\SenseWebApi1\\SenseWebApi1\\SenseWebApi1.csproj",
-        "packagesPath": "C:\\Users\\тимур\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\тимур\\source\\repos\\pricheson\\SenseTower-1task\\SenseWebApi1\\SenseWebApi1\\obj\\",
+        "projectPath": "C:\\Users\\timur\\Documents\\GitHub\\SenseTower-1task\\SenseWebApi1\\SenseWebApi1\\SenseWebApi1.csproj",
+        "packagesPath": "C:\\Users\\timur\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\timur\\Documents\\GitHub\\SenseTower-1task\\SenseWebApi1\\SenseWebApi1\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-        ],
         "configFilePaths": [
-          "C:\\Users\\тимур\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Users\\timur\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [

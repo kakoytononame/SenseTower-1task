@@ -8,6 +8,7 @@ namespace SenseWebApi1.Features.MyFeature.Validators
     {
         public EventDeleteCommandValidator()
         {
+            
             RuleFor(p => p.EventId).NotEmpty().WithMessage("Пустое id события");
         }
     }

@@ -10,5 +10,7 @@ namespace SenseWebApi1.Context
         void AddEvent(Event @event);
         void RemoveEvent(Guid id);
         void UpdateEvent(Event @event);
+
+        bool HaveEvent(Guid EventId);
     }
 }

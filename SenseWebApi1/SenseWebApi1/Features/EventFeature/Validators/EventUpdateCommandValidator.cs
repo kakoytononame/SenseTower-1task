@@ -8,6 +8,7 @@ namespace SenseWebApi1.Features.MyFeature.Validators
     {
         public EventUpdateCommandValidator(IAreaContext areaContext,IImageContext imageContext)
         {
+            
             RuleFor(p => p.EventId).NotEmpty().WithMessage("Пустое id события").WithErrorCode("400");
             RuleFor(p => p.EventName).NotNull().NotEmpty().WithMessage("Неверное имя").WithErrorCode("400"); ;
             RuleFor(p => p.AreaId).NotEmpty().WithMessage("Пустое id пространства").Must(p => areaContext.IsHave(p)).WithMessage("Такого пространства нет").WithErrorCode("400");

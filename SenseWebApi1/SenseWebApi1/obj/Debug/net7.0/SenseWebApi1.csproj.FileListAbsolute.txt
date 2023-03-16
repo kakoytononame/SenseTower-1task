@@ -82,3 +82,6 @@ C:\Users\timur\Documents\GitHub\SenseTower-1task\SenseWebApi1\SenseWebApi1\obj\D
 C:\Users\timur\Documents\GitHub\SenseTower-1task\SenseWebApi1\SenseWebApi1\obj\Debug\net7.0\SenseWebApi1.pdb
 C:\Users\timur\Documents\GitHub\SenseTower-1task\SenseWebApi1\SenseWebApi1\obj\Debug\net7.0\SenseWebApi1.genruntimeconfig.cache
 C:\Users\timur\Documents\GitHub\SenseTower-1task\SenseWebApi1\SenseWebApi1\obj\Debug\net7.0\ref\SenseWebApi1.dll
+C:\Users\тимур\source\repos\pricheson\SenseTower-1task\SenseWebApi1\SenseWebApi1\bin\Debug\net7.0\JetBrains.Annotations.dll
+C:\Users\тимур\source\repos\pricheson\SenseTower-1task\SenseWebApi1\SenseWebApi1\bin\Debug\net7.0\SC.Internship.Common.dll
+C:\Users\тимур\source\repos\pricheson\SenseTower-1task\SenseWebApi1\SenseWebApi1\bin\Debug\net7.0\SC.Internship.Common.pdb

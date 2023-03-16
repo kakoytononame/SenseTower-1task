@@ -8,5 +8,9 @@ namespace SenseWebApi1.Context
         void AddFreeTickets(Guid EventId,int CountOfTickets);
         bool UserHaveTicket(Guid userId, Guid ticketId);
         void GiveTicketForUser(Guid userId, Guid ticketId);
+
+        bool CheckTicketForUser(Guid userId,Guid EventId);
+
+        bool TicketHave(Guid ticketId);
     }
 }

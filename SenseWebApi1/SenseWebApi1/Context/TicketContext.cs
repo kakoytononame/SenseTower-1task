@@ -40,6 +40,26 @@ namespace SenseWebApi1.Context
             }
         }
 
+        public bool CheckTicketForUser(Guid userId)
+        {
+            var ticket = Tickets.Where(p => p.OwnerId == userId).FirstOrDefault();
+            if(ticket != null)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        public bool CheckTicketForUser(Guid userId, Guid EventId)
+        {
+            var ticket = Tickets.Where(p => p.OwnerId == userId&&p.EventId==EventId).FirstOrDefault();
+            if(ticket != null)
+            {
+                return true;
+            }
+            return false;
+        }
+
         public void GiveTicketForUser(Guid userId, Guid ticketId)
         {
             var ticket=Tickets.Where(p => p.TicketId == ticketId).FirstOrDefault();
@@ -51,6 +71,16 @@ namespace SenseWebApi1.Context
             {
                 throw new ArgumentException("Такой билет не найден");
             }
+        }
+
+        public bool TicketHave(Guid ticketId)
+        {
+            var ticket = Tickets.Where(p => p.TicketId == ticketId).FirstOrDefault();
+            if( ticket != null)
+            {
+                return true;
+            }
+            return false;
         }
 
         public bool UserHaveTicket(Guid userId, Guid ticketId)

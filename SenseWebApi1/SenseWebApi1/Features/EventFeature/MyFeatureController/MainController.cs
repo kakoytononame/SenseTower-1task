@@ -6,11 +6,13 @@ using SenseWebApi1.Features.MyFeature.Commands.EventsCommands;
 using SenseWebApi1.Context;
 using System.Reflection.Metadata;
 using System.Threading;
+using SC.Internship.Common.ScResult;
 
 namespace SenseWebApi1.Features.MyFeature.MyFeatureController
 {
     [ApiController]
     [Route("api")]
+    
     public class MainController : ControllerBase
     {
         private readonly IMediator _mediator;
@@ -42,13 +44,18 @@ namespace SenseWebApi1.Features.MyFeature.MyFeatureController
         ///
         /// </remarks>
         /// <response code="200">Возвращает id добавленного события </response>
+        /// <response code="401">Возвращает unauthorized </response>
+        /// <response code="500">Ошибка сервера </response>
         [HttpPost("events")]
 
         public async Task<IActionResult> CreateEvent(EventDto eventDto)
         {
             var eventCreateCommand = _mapper.Map<EventCreateCommand>(eventDto);
             var result=await _mediator.Send(eventCreateCommand);
-            return Ok(result);
+            return Ok(new ScResult<Guid>()
+            {
+                Result = result
+            });
         }
         /// <summary>
         /// Изменение события
@@ -70,13 +77,18 @@ namespace SenseWebApi1.Features.MyFeature.MyFeatureController
         ///
         /// </remarks>
         /// <response code="200">Возвращает данные об измененном событии </response>
+        /// <response code="401">Возвращает unauthorized </response>
+        /// <response code="500">Ошибка сервера </response>
         [HttpPut("events/{eventId}")]
 
         public async Task<IActionResult> ChangeEvent(EventDto eventDto)
         {
             var eventUpdateCommand = _mapper.Map<EventUpdateCommand>(eventDto);
             var result=await _mediator.Send(eventUpdateCommand);
-            return Ok(result);
+            return Ok(new ScResult<EventDto>()
+            {
+                Result= result
+            });
         }
         /// <summary>
         /// Удаление события
@@ -90,12 +102,14 @@ namespace SenseWebApi1.Features.MyFeature.MyFeatureController
         ///
         /// </remarks>
         /// <response code="200">Возвращает id удаленного события</response>
+        /// <response code="401">Возвращает unauthorized </response>
+        /// <response code="500">Ошибка сервера </response>
         [HttpDelete("events/{eventId}")]
 
         public async Task<IActionResult> DeleteEvent(Guid eventId)
         {
             _mediator.Send(new EventDeleteCommand() {EventId=eventId });
-            return Ok();
+            return Ok(new ScResult());
         }
 
         /// <summary>
@@ -103,14 +117,19 @@ namespace SenseWebApi1.Features.MyFeature.MyFeatureController
         /// </summary>
         /// <returns></returns>
         /// <response code="200">Возвращает json строку с данными о событиях </response>
+        /// <response code="401">Возвращает unauthorized </response>
+        /// <response code="500">Ошибка сервера </response>
         [HttpGet("events")]
         public async Task<IActionResult> GetEvents()
         {
             
             
             var result =await _mediator.Send(new GetEventCommand());
-            
-            return Ok(result);
+
+            return Ok(new ScResult<IEnumerable<EventDto>>()
+            {
+                Result = result
+            }) ;
         }
         
 

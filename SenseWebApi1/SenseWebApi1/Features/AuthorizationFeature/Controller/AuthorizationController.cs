@@ -1,0 +1,51 @@
+﻿using Microsoft.AspNetCore.Mvc;
+using System.Net.Http;
+using System.Text.Json;
+using System.Text;
+using SC.Internship.Common.ScResult;
+using SC.Internship.Common.Exceptions;
+
+namespace SenseWebApi1.Features.AuthorizationFeature.Controller
+{
+    [ApiController]
+    public class AuthorizationController:ControllerBase
+    {
+
+        private static readonly HttpClient client = new HttpClient();
+        /// <summary>
+        /// Запрос авторизации
+        /// </summary>
+        /// <returns></returns>
+        /// <remarks>
+        /// Пример входных данных:
+        ///
+        ///     POST /stub/authstub
+        ///     {
+        ///        "login": "admin",Тип данных:string
+        ///        "password": "12345",Тип данных:string
+        ///        
+        ///     }
+        ///
+        /// </remarks>
+        /// <response code="200">Возвращает id добавленного события </response>
+        /// <response code="401">Возвращает unauthorized </response>
+        /// <response code="500">Ошибка сервера </response>
+        [HttpPost("stub/authstub")]
+        public async Task<IActionResult> LogIn(string login,string password)
+        {
+            var value = new
+            {
+                login = login,
+                password = password
+            };
+
+            var content = new StringContent(JsonSerializer.Serialize(value), Encoding.UTF8, "application/json");
+            var response = await client.PostAsync("https://localhost:7083/stub/authstub", content);
+            if(response.StatusCode==System.Net.HttpStatusCode.Unauthorized)
+            {
+                throw new ScException("Не верный логин или пароль");
+            }
+            return Ok(response);
+        }
+    }
+}

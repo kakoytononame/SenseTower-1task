@@ -29,5 +29,9 @@
         public Guid ImageId { get; set; }
 
         public Guid AreaId { get; set; }
+
+        public List<Ticket> Tickets { get; set; }
+
+        public bool IsHaveFreePlaces { get; set; }
     }
 }

@@ -4,6 +4,159 @@
         <name>SenseWebApi1</name>
     </assembly>
     <members>
+        <member name="M:SenseWebApi1.Features.MyFeature.MyFeatureController.MainController.CreateEvent(SenseWebApi1.domain.Dtos.EventDto)">
+             <summary>
+             Создание события
+             </summary>
+             <returns></returns>
+             <remarks>
+             Пример входных данных:
+            
+                 POST /events
+                 {
+                    "eventId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",Тип данных:Guid
+                    "beginning": "2023-03-14T16:52:06.478Z",Тип данных:DateTime
+                    "end": "2023-03-14T16:52:06.478Z",Тип данных:DateTime
+                    "eventName": "string",Тип данных:String
+                    "description": "string",Тип данных:String
+                    "imageId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",Тип данных:Guid
+                    "areaId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",Тип данных:Guid
+                 }
+            
+             </remarks>
+             <response code="200">Возвращает id добавленного события </response>
+             <response code="401">Возвращает unauthorized </response>
+             <response code="500">Ошибка сервера </response>
+        </member>
+        <member name="M:SenseWebApi1.Features.MyFeature.MyFeatureController.MainController.ChangeEvent(SenseWebApi1.domain.Dtos.EventDto)">
+             <summary>
+             Изменение события
+             </summary>
+             <returns></returns>
+             <remarks>
+             Пример входных данных:
+            
+                 PUT /events/{eventId}
+                 {
+                    "eventId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",Тип данных:Guid
+                    "beginning": "2023-03-14T16:52:06.478Z",Тип данных:DateTime
+                    "end": "2023-03-14T16:52:06.478Z",Тип данных:DateTime
+                    "eventName": "string",Тип данных:String
+                    "description": "string",Тип данных:String
+                    "imageId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",Тип данных:Guid
+                    "areaId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",Тип данных:Guid
+                 }
+            
+             </remarks>
+             <response code="200">Возвращает данные об измененном событии </response>
+             <response code="401">Возвращает unauthorized </response>
+             <response code="500">Ошибка сервера </response>
+        </member>
+        <member name="M:SenseWebApi1.Features.MyFeature.MyFeatureController.MainController.DeleteEvent(System.Guid)">
+             <summary>
+             Удаление события
+             </summary>
+             <returns></returns>
+             <remarks>
+             Пример входных данных:
+            
+                 PUT /events/{eventId}
+                 eventId Тип данных:Guid
+            
+             </remarks>
+             <response code="200">Возвращает id удаленного события</response>
+             <response code="401">Возвращает unauthorized </response>
+             <response code="500">Ошибка сервера </response>
+        </member>
+        <member name="M:SenseWebApi1.Features.MyFeature.MyFeatureController.MainController.GetEvents">
+            <summary>
+            Получение событий из базы данных
+            </summary>
+            <returns></returns>
+            <response code="200">Возвращает json строку с данными о событиях </response>
+            <response code="401">Возвращает unauthorized </response>
+            <response code="500">Ошибка сервера </response>
+        </member>
+        <member name="M:SenseWebApi1.Features.AuthorizationFeature.Controller.AuthorizationController.LogIn(System.String,System.String)">
+             <summary>
+             Запрос авторизации
+             </summary>
+             <returns></returns>
+             <remarks>
+             Пример входных данных:
+            
+                 POST /stub/authstub
+                 {
+                    "login": "admin",Тип данных:string
+                    "password": "12345",Тип данных:string
+                    
+                 }
+            
+             </remarks>
+             <response code="200">Возвращает id добавленного события </response>
+             <response code="401">Возвращает unauthorized </response>
+             <response code="500">Ошибка сервера </response>
+        </member>
+        <member name="M:SenseWebApi1.Features.TicketFeature.Controller.TicketsController.AddFreeTickets(System.Guid,System.Int32)">
+             <summary>
+             Добавить бесплатные билеты
+             </summary>
+             <returns></returns>
+             <remarks>
+             Пример входных данных:
+            
+                 POST /tickets
+                 {
+                    "eventId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",Тип данных:Guid
+                    "countoftickets": "10",Тип данных:int
+                   
+                 }
+            
+             </remarks>
+             <response code="200">Возвращает bool добавленны билеты </response>
+             <response code="401">Возвращает unauthorized </response>
+             <response code="500">Ошибка сервера </response>
+        </member>
+        <member name="M:SenseWebApi1.Features.TicketFeature.Controller.TicketsController.GiveTicketForUser(System.Guid,System.Guid)">
+             <summary>
+             Дать пользователю билет
+             </summary>
+             <returns></returns>
+             <remarks>
+             Пример входных данных:
+            
+                 POST /tickets/{ticketId}
+                 {
+                    "eventId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",Тип данных:Guid
+                    "ticketId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",Тип данных:Guid
+                   
+                 }
+            
+             </remarks>
+             <response code="200">Возвращает bool добавленны билеты </response>
+             <response code="401">Возвращает unauthorized </response>
+             <response code="500">Ошибка сервера </response>
+        </member>
+        <member name="M:SenseWebApi1.Features.TicketFeature.Controller.TicketsController.CheckTicketForUser(System.Guid,System.Guid)">
+             <summary>
+             Проверить билет у пользователя
+             </summary>
+             <returns></returns>
+             <remarks>
+             Пример входных данных:
+            
+                 POST /tickets
+                 {
+                    "userId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",Тип данных:Guid
+                    "ticketId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",Тип данных:Guid
+                   
+                 }
+            
+             </remarks>
+             <response code="200">Возвращает bool добавленны билеты </response>
+             <response code="401">Возвращает unauthorized </response>
+             <response code="500">Ошибка сервера </response>
+        </member>
         <member name="P:SenseWebApi1.domain.Dtos.EventDto.EventId">
             <summary>
             The name of the product
@@ -39,71 +192,6 @@
             <summary>
             Id картинки
             </summary>
-        </member>
-        <member name="M:SenseWebApi1.Features.MyFeature.MyFeatureController.MainController.CreateEvent(SenseWebApi1.domain.Dtos.EventDto)">
-             <summary>
-             Создание события
-             </summary>
-             <returns></returns>
-             <remarks>
-             Пример входных данных:
-            
-                 POST /events
-                 {
-                    "eventId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",Тип данных:Guid
-                    "beginning": "2023-03-14T16:52:06.478Z",Тип данных:DateTime
-                    "end": "2023-03-14T16:52:06.478Z",Тип данных:DateTime
-                    "eventName": "string",Тип данных:String
-                    "description": "string",Тип данных:String
-                    "imageId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",Тип данных:Guid
-                    "areaId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",Тип данных:Guid
-                 }
-            
-             </remarks>
-             <response code="200">Возвращает id добавленного события </response>
-        </member>
-        <member name="M:SenseWebApi1.Features.MyFeature.MyFeatureController.MainController.ChangeEvent(SenseWebApi1.domain.Dtos.EventDto)">
-             <summary>
-             Изменение события
-             </summary>
-             <returns></returns>
-             <remarks>
-             Пример входных данных:
-            
-                 PUT /events/{eventId}
-                 {
-                    "eventId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",Тип данных:Guid
-                    "beginning": "2023-03-14T16:52:06.478Z",Тип данных:DateTime
-                    "end": "2023-03-14T16:52:06.478Z",Тип данных:DateTime
-                    "eventName": "string",Тип данных:String
-                    "description": "string",Тип данных:String
-                    "imageId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",Тип данных:Guid
-                    "areaId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",Тип данных:Guid
-                 }
-            
-             </remarks>
-             <response code="200">Возвращает данные об измененном событии </response>
-        </member>
-        <member name="M:SenseWebApi1.Features.MyFeature.MyFeatureController.MainController.DeleteEvent(System.Guid)">
-             <summary>
-             Удаление события
-             </summary>
-             <returns></returns>
-             <remarks>
-             Пример входных данных:
-            
-                 PUT /events/{eventId}
-                 eventId Тип данных:Guid
-            
-             </remarks>
-             <response code="200">Возвращает id удаленного события</response>
-        </member>
-        <member name="M:SenseWebApi1.Features.MyFeature.MyFeatureController.MainController.GetEvents">
-            <summary>
-            Получение событий из базы данных
-            </summary>
-            <returns></returns>
-            <response code="200">Возвращает json строку с данными о событиях </response>
         </member>
     </members>
 </doc>

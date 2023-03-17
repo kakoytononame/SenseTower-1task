@@ -57,5 +57,15 @@ namespace SenseWebApi1.Context
             updateobject.Description = @event.Description;
             updateobject.ImageId = @event.ImageId;
         }
+
+        public bool HaveEvent(Guid EventId)
+        {
+            var eventhave = Events.Where(p => p.EventId==EventId).FirstOrDefault();
+            if(eventhave != null)
+            {
+                return true;
+            }
+            return false;
+        }
     }
 }

@@ -7,12 +7,13 @@ using SenseWebApi1.Context;
 using System.Reflection.Metadata;
 using System.Threading;
 using SC.Internship.Common.ScResult;
+using Microsoft.AspNetCore.Authorization;
 
 namespace SenseWebApi1.Features.MyFeature.MyFeatureController
 {
     [ApiController]
     [Route("api")]
-    
+    [Authorize]
     public class MainController : ControllerBase
     {
         private readonly IMediator _mediator;

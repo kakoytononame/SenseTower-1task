@@ -85,3 +85,10 @@ C:\Users\timur\Documents\GitHub\SenseTower-1task\SenseWebApi1\SenseWebApi1\obj\D
 C:\Users\тимур\source\repos\pricheson\SenseTower-1task\SenseWebApi1\SenseWebApi1\bin\Debug\net7.0\JetBrains.Annotations.dll
 C:\Users\тимур\source\repos\pricheson\SenseTower-1task\SenseWebApi1\SenseWebApi1\bin\Debug\net7.0\SC.Internship.Common.dll
 C:\Users\тимур\source\repos\pricheson\SenseTower-1task\SenseWebApi1\SenseWebApi1\bin\Debug\net7.0\SC.Internship.Common.pdb
+C:\Users\тимур\source\repos\pricheson\SenseTower-1task\SenseWebApi1\SenseWebApi1\bin\Debug\net7.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\Users\тимур\source\repos\pricheson\SenseTower-1task\SenseWebApi1\SenseWebApi1\bin\Debug\net7.0\Microsoft.IdentityModel.JsonWebTokens.dll
+C:\Users\тимур\source\repos\pricheson\SenseTower-1task\SenseWebApi1\SenseWebApi1\bin\Debug\net7.0\Microsoft.IdentityModel.Logging.dll
+C:\Users\тимур\source\repos\pricheson\SenseTower-1task\SenseWebApi1\SenseWebApi1\bin\Debug\net7.0\Microsoft.IdentityModel.Protocols.dll
+C:\Users\тимур\source\repos\pricheson\SenseTower-1task\SenseWebApi1\SenseWebApi1\bin\Debug\net7.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+C:\Users\тимур\source\repos\pricheson\SenseTower-1task\SenseWebApi1\SenseWebApi1\bin\Debug\net7.0\Microsoft.IdentityModel.Tokens.dll
+C:\Users\тимур\source\repos\pricheson\SenseTower-1task\SenseWebApi1\SenseWebApi1\bin\Debug\net7.0\System.IdentityModel.Tokens.Jwt.dll

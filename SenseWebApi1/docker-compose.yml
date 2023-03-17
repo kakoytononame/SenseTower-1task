@@ -1,0 +1,15 @@
+version: '3.5'
+
+services:
+    identityserver0:
+      image: kakoytononame15/identityserver0
+      ports:
+        - "5000:3000"
+      container_name: identityserver0  
+    eventApi:
+      image: eventapi
+      build: 
+        context: .
+        dockerfile: SenseWebApi1/Dockerfile 
+      ports:
+        - "5001:80"  

@@ -40,8 +40,15 @@ namespace SenseWebApi1.Features.AuthorizationFeature.Controller
             };
 
             var content = new StringContent(JsonSerializer.Serialize(value), Encoding.UTF8, "application/json");
-            var response = await client.PostAsync("https://localhost:7083/stub/authstub", content);
-            if(response.StatusCode==System.Net.HttpStatusCode.Unauthorized)
+            var response = await client.PostAsync("http://identityserver0:3000/stub/authstub", content);
+            var responseString = await response.Content.ReadAsStringAsync();
+            ControllerContext.HttpContext.Response.Cookies.Append(".AspNetCore.Application.Id", responseString, new CookieOptions
+            {
+                MaxAge = TimeSpan.FromMinutes(60),
+                SameSite = SameSiteMode.Strict,
+                Secure = false,
+            });
+            if (response.StatusCode==System.Net.HttpStatusCode.Unauthorized)
             {
                 throw new ScException("Не верный логин или пароль");
             }

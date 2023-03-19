@@ -1,5 +1,4 @@
 using MediatR;
-using SenseWebApi1.Mapping;
 using SenseWebApi1.Context;
 using System.Reflection;
 using FluentValidation;
@@ -10,6 +9,7 @@ using Microsoft.AspNetCore.CookiePolicy;
 using SenseWebApi1.MongoDB;
 using SenseWebApi1.Common;
 using SenseWebApi1.Common.Middlewares;
+using SenseWebApi1.Features.EventFeature;
 
 var builder = WebApplication.CreateBuilder(args);
 

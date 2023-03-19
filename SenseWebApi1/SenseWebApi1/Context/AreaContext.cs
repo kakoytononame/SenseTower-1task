@@ -5,17 +5,19 @@ namespace SenseWebApi1.Context
 {
     public class AreaContext:IAreaContext
     {
+        // ReSharper disable once FieldCanBeMadeReadOnly.Local
+        // ReSharper disable once InconsistentNaming
         private List<Area> Areas = new List<Area>();
         public AreaContext() 
         {
             Areas.Add(new Area()
             {
-                AreaId=Guid.Parse("aaf2c1b9-6372-44bc-b0e4-1251b914c2dd"),
+                AreaId=Guid.Parse("75d4e526-3cd6-4aa2-92f4-9e1ecc574f20"),
                 AreaName="Area 1"
             });
             Areas.Add(new Area()
             {
-                AreaId = Guid.Parse("53eaf4f5-b005-4eb1-a030-96205cbd9a89"),
+                AreaId = Guid.Parse("ec747803-890d-4ce4-8958-64cfea4e77a7"),
                 AreaName = "Area 2"
             });
         }

@@ -6,7 +6,10 @@ using System.Reflection.Metadata;
 using System.Threading;
 using SC.Internship.Common.ScResult;
 using Microsoft.AspNetCore.Authorization;
-using SenseWebApi1.Features.EventFeature.EventsCommands;
+using SenseWebApi1.Features.EventFeature.CreateEvent;
+using SenseWebApi1.Features.EventFeature.DeleteEvent;
+using SenseWebApi1.Features.EventFeature.GetEvents;
+using SenseWebApi1.Features.EventFeature.UpdateEvent;
 
 namespace SenseWebApi1.Features.EventFeature
 {
@@ -33,7 +36,7 @@ namespace SenseWebApi1.Features.EventFeature
         ///
         ///     POST /events
         ///     {
-        ///        "eventId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",Тип данных:Guid
+        ///        
         ///        "beginning": "2023-03-14T16:52:06.478Z",Тип данных:DateTime
         ///        "end": "2023-03-14T16:52:06.478Z",Тип данных:DateTime
         ///        "eventName": "string",Тип данных:String
@@ -48,9 +51,9 @@ namespace SenseWebApi1.Features.EventFeature
         /// <response code="500">Ошибка сервера </response>
         [HttpPost("events")]
 
-        public async Task<IActionResult> CreateEvent(EventDto eventDto)
+        public async Task<IActionResult> CreateEvent(EventCreateCommand eventCreateCommand)
         {
-            var eventCreateCommand = _mapper.Map<EventCreateCommand>(eventDto);
+            
             var result = await _mediator.Send(eventCreateCommand);
             return Ok(new ScResult<Guid>()
             {
@@ -81,11 +84,11 @@ namespace SenseWebApi1.Features.EventFeature
         /// <response code="500">Ошибка сервера </response>
         [HttpPut("events/{eventId}")]
 
-        public async Task<IActionResult> ChangeEvent(EventDto eventDto)
+        public async Task<IActionResult> ChangeEvent(EventUpdateCommand eventUpdateCommand)
         {
-            var eventUpdateCommand = _mapper.Map<EventUpdateCommand>(eventDto);
+            
             var result = await _mediator.Send(eventUpdateCommand);
-            return Ok(new ScResult<EventDto>()
+            return Ok(new ScResult<EventUpdateDto>()
             {
                 Result = result
             });

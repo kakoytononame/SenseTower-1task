@@ -2,7 +2,10 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using SC.Internship.Common.ScResult;
-using SenseWebApi1.Features.TicketFeature.TicketsCommand;
+using SenseWebApi1.Features.TicketFeature.AddFreeTickets;
+using SenseWebApi1.Features.TicketFeature.CheckTicketForUser;
+using SenseWebApi1.Features.TicketFeature.GetTicket;
+using SenseWebApi1.Features.TicketFeature.GiveTicketForUser;
 
 namespace SenseWebApi1.Features.TicketFeature
 {
@@ -55,9 +58,9 @@ namespace SenseWebApi1.Features.TicketFeature
         ///
         ///     POST /tickets/{ticketId}
         ///     {
-        ///        "eventId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",Тип данных:Guid
-        ///        "ticketId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",Тип данных:Guid
-        ///       
+        ///         "ticketId": "8299f9f5-6176-4595-9004-bd01beafeb25",
+        ///         "ownerId": "f4d26a57-0725-4796-82bf-2be457bbfcd4",
+        ///         "place": "4"
         ///     }
         ///
         /// </remarks>
@@ -66,9 +69,9 @@ namespace SenseWebApi1.Features.TicketFeature
         /// <response code="500">Ошибка сервера </response>
         [HttpPut("tickets/{ticketId}")]
 
-        public async Task<IActionResult> GiveTicketForUser(Guid ticketId, Guid ownerId)
+        public async Task<IActionResult> GiveTicketForUser(Guid ticketId, Guid ownerId,string place)
         {
-            var result = await _mediator.Send(new GiveTicketForUserCommand() { TicketId = ticketId, OwnerId = ownerId });
+            var result = await _mediator.Send(new GiveTicketForUserCommand() { TicketId = ticketId, OwnerId = ownerId, Place = place});
             return Ok(new ScResult<Guid>()
             {
                 Result = result

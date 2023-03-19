@@ -7,7 +7,7 @@ namespace SenseWebApi1.Context
     {
         Task AddFreeTickets(Guid eventId,int countOfTickets);
         Task<bool> UserHaveTicket(Guid userId, Guid ticketId);
-        Task GiveTicketForUser(Guid userId, Guid ticketId);
+        Task GiveTicketForUser(Guid userId, Guid ticketId,string? place );
 
         Task<bool> CheckTicketForUser(Guid userId,Guid eventId);
 

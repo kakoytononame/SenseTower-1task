@@ -50,7 +50,7 @@ namespace SenseWebApi1.Context
             return ticket != null;
         }
 
-        public async Task GiveTicketForUser(Guid userId, Guid ticketId)
+        public async Task GiveTicketForUser(Guid userId, Guid ticketId,string? place)
         {
             var mongoCollection = _databaseContext.GetMongoDatabase().GetCollection<Ticket>("Tickets");
             var ticket = await mongoCollection.Find(p => p.TicketId == ticketId).FirstOrDefaultAsync();
@@ -58,11 +58,13 @@ namespace SenseWebApi1.Context
             {
                 ticket.OwnerId = userId;
                 var filter = Builders<Ticket>.Filter
-                .Where(p => p.EventId == userId);
+                .Where(p => p.TicketId == ticketId);
                 var update = Builders<Ticket>.Update
-                    .Set(p => p.EventId, userId);
+                    .Set(p => p.TicketId, ticketId)
+                    .Set(p => p.Place, place)
+                    .Set(p => p.OwnerId, userId);
                     
-                //var updateSettings = @event.ToBsonDocument();
+                
                 var personUpdateResult = await mongoCollection.UpdateOneAsync(filter, update);
             }
             else

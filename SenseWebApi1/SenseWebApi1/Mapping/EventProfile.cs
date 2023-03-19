@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
-using SenseWebApi1.domain.Dtos;
-using SenseWebApi1.domain.Entities;
-using SenseWebApi1.Features.MyFeature.Commands.EventsCommands;
+using SenseWebApi1.Features.EventFeature;
+using SenseWebApi1.Features.EventFeature.EventsCommands;
 
 namespace SenseWebApi1.Mapping
 {

@@ -1,97 +1,90 @@
-﻿using SenseWebApi1.domain.Dtos;
-using SenseWebApi1.domain.Entities;
+﻿using Microsoft.Extensions.Logging;
+using MongoDB.Bson;
+using MongoDB.Driver;
+using SC.Internship.Common.Exceptions;
+using SenseWebApi1.Features.TicketFeature;
+using SenseWebApi1.MongoDB;
 
 namespace SenseWebApi1.Context
 {
     public class TicketContext : ITicketContext
     {
-        private List<Ticket> Tickets=new List<Ticket>();
-        public TicketContext() 
+        private readonly IMongoDbContext _databaseContext;
+
+        // ReSharper disable once FieldCanBeMadeReadOnly.Local
+        private List<Ticket> _tickets=new List<Ticket>();
+        public TicketContext(IMongoDbContext mongoDbContext) 
         {
-            Tickets.Add(
-                new Ticket
-                {
-                    TicketId = Guid.Parse("7676ce96-417d-4214-9382-3eb46b4f86e3"),
-                    OwnerId = Guid.Parse("d04a76aa-2f20-4af9-a39e-427623323374"),
-                    EventId = Guid.Parse("4e1d7548-5605-455b-94a5-c18c4f1e9a4f")
-                }
-            );
-            Tickets.Add(
-                new Ticket
-                {
-                    TicketId = Guid.Parse("b15624ea-9cc3-42d4-a6a5-15c4e6697f4c"),
-                    OwnerId = Guid.Parse("da2a7240-8fbb-48eb-bdcb-cc154593587f"),
-                    EventId= Guid.Parse("454184a3-1be7-4738-9a01-ffe48a04f200"),
-                }
-            );
+            _databaseContext = mongoDbContext;
         }
         
-
-        public void AddFreeTickets(Guid EventId, int CountOfTickets)
+        public async Task<List<Ticket>> GetTickets(Guid eventId)
         {
-            for (int i = 0; i < CountOfTickets; i++)
+            var mongoCollection = _databaseContext.GetMongoDatabase().GetCollection<Ticket>("Tickets");
+            
+            var eventsCollection = await mongoCollection.Find(p => p.EventId==eventId).ToListAsync();
+
+            return eventsCollection;
+        }
+        public async Task AddFreeTickets(Guid eventId, int countOfTickets)
+        {
+            var mongoCollection = _databaseContext.GetMongoDatabase().GetCollection<Ticket>("Tickets");
+            
+            for (var i = 0; i < countOfTickets; i++)
             {
-                Tickets.Add(
+                _tickets.Add(
                 new Ticket
                 {
                     TicketId = Guid.NewGuid(),
-                    EventId=EventId
+                    EventId=eventId
                 });
             }
+            await mongoCollection.InsertManyAsync(_tickets);
         }
 
-        public bool CheckTicketForUser(Guid userId)
+        public async Task<bool> CheckTicketForUser(Guid userId, Guid eventId)
         {
-            var ticket = Tickets.Where(p => p.OwnerId == userId).FirstOrDefault();
-            if(ticket != null)
-            {
-                return true;
-            }
-            return false;
+            var mongoCollection = _databaseContext.GetMongoDatabase().GetCollection<Ticket>("Tickets");
+            var eventsCollection = await mongoCollection.Find(_ => true).ToListAsync();
+            var ticket = eventsCollection.FirstOrDefault(p => p.OwnerId == userId && p.EventId == eventId);
+            return ticket != null;
         }
 
-        public bool CheckTicketForUser(Guid userId, Guid EventId)
+        public async Task GiveTicketForUser(Guid userId, Guid ticketId)
         {
-            var ticket = Tickets.Where(p => p.OwnerId == userId&&p.EventId==EventId).FirstOrDefault();
-            if(ticket != null)
-            {
-                return true;
-            }
-            return false;
-        }
-
-        public void GiveTicketForUser(Guid userId, Guid ticketId)
-        {
-            var ticket=Tickets.Where(p => p.TicketId == ticketId).FirstOrDefault();
+            var mongoCollection = _databaseContext.GetMongoDatabase().GetCollection<Ticket>("Tickets");
+            var ticket = await mongoCollection.Find(p => p.TicketId == ticketId).FirstOrDefaultAsync();
             if (ticket != null)
             {
                 ticket.OwnerId = userId;
+                var filter = Builders<Ticket>.Filter
+                .Where(p => p.EventId == userId);
+                var update = Builders<Ticket>.Update
+                    .Set(p => p.EventId, userId);
+                    
+                //var updateSettings = @event.ToBsonDocument();
+                var personUpdateResult = await mongoCollection.UpdateOneAsync(filter, update);
             }
             else
             {
-                throw new ArgumentException("Такой билет не найден");
+                
+                
+                throw new ScException("Такой билет не найден");
             }
         }
 
-        public bool TicketHave(Guid ticketId)
+        public async Task<bool> TicketHave(Guid ticketId)
         {
-            var ticket = Tickets.Where(p => p.TicketId == ticketId).FirstOrDefault();
-            if( ticket != null)
-            {
-                return true;
-            }
-            return false;
+            var mongoCollection = _databaseContext.GetMongoDatabase().GetCollection<Ticket>("Tickets");
+            var eventObj = await mongoCollection.Find(p => p.TicketId == ticketId).FirstOrDefaultAsync();
+            return eventObj != null;
         }
 
-        public bool UserHaveTicket(Guid userId, Guid ticketId)
+        public async Task<bool> UserHaveTicket(Guid userId, Guid ticketId)
         {
-            var ticket = Tickets.Where(p => p.OwnerId == userId).FirstOrDefault();
-            if (ticket == null)
-            {
-                return false;
-            }
-            return true;
-
+            var mongoCollection = _databaseContext.GetMongoDatabase().GetCollection<Ticket>("Tickets");
+            var ticket = await mongoCollection.Find(p => p.OwnerId == userId&&p.TicketId==ticketId).FirstOrDefaultAsync();
+            return ticket != null;
         }
     }
 }

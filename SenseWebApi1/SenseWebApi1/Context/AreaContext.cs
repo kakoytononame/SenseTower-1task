@@ -1,4 +1,4 @@
-﻿using SenseWebApi1.domain.Entities;
+﻿using SenseWebApi1.Features.EventFeature;
 using static System.Net.Mime.MediaTypeNames;
 
 namespace SenseWebApi1.Context
@@ -24,12 +24,8 @@ namespace SenseWebApi1.Context
 
         public bool IsHave(Guid id)
         {
-            var area=Areas.Where(p=>p.AreaId==id).FirstOrDefault();
-            if(area==null) 
-            {
-                return false;
-            }
-            return true;
+            var area=Areas.FirstOrDefault(p => p.AreaId==id);
+            return area != null;
         }
     }
 }

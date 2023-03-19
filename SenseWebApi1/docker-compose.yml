@@ -12,4 +12,11 @@ services:
         context: .
         dockerfile: SenseWebApi1/Dockerfile 
       ports:
-        - "5001:80"  
+        - "5001:80"
+    mongodb:
+      image: mongodb/mongodb-community-server:latest
+      environment:
+        - MONGO_INITDB_ROOT_USERNAME=user
+        - MONGO_INITDB_ROOT_PASSWORD=pass
+      ports:
+        - "5002:27017"

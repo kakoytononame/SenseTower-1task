@@ -1,71 +1,63 @@
-﻿using SenseWebApi1.domain.Entities;
+﻿
+using MongoDB.Driver;
+using SenseWebApi1.Features.EventFeature;
+using SenseWebApi1.MongoDB;
+
 
 namespace SenseWebApi1.Context
 {
     public class EventContext : IEventContext
     {
-        private List<Event> Events=new List<Event>();
         
-        public EventContext()
+        private readonly IMongoDbContext _databaseContext;
+
+        public EventContext(IMongoDbContext databaseContext)
         {
-            Events.Add(new Event()
-            {
-                EventId = Guid.Parse("4e1d7548-5605-455b-94a5-c18c4f1e9a4f"),
-                EventName = "Name 1",
-                Beginning = DateTime.Now,
-                End = DateTime.Now,
-                AreaId = Guid.Parse("aaf2c1b9-6372-44bc-b0e4-1251b914c2dd"),
-                ImageId = Guid.Parse("074a2eb2-4b45-4ac8-88ac-12b5dc52b252"),
-                Description = "Desc 1"
-            });
-            Events.Add(new Event()
-            {
-                EventId = Guid.Parse("454184a3-1be7-4738-9a01-ffe48a04f200"),
-                EventName = "Name 2",
-                Beginning = DateTime.Now,
-                End = DateTime.Now,
-                AreaId = Guid.Parse("53eaf4f5-b005-4eb1-a030-96205cbd9a89"),
-                ImageId = Guid.Parse("9f4813cd-6d37-4393-b7ce-f2cc2c81ef3b"),
-                Description = "Desc 2"
-            });
+            _databaseContext = databaseContext;
+
+            databaseContext.EventIniz();
+            databaseContext.TicketIniz();
+        }
+        public async Task<List<Event>> GetEvents()
+        {
+            var mongoCollection = _databaseContext.GetMongoDatabase().GetCollection<Event>("Events");
+            var eventsCollection = await mongoCollection.Find(_ => true).ToListAsync();
+            return eventsCollection;
             
         }
-        public List<Event> GetEvents()
+        public async Task AddEvent(Event @event)
+        {           
+            var mongoCollection = _databaseContext.GetMongoDatabase().GetCollection<Event>("Events");
+            await mongoCollection.InsertOneAsync(@event);
+        }
+
+        public async Task RemoveEvent(Guid id)
         {
+            var mongoCollection = _databaseContext.GetMongoDatabase().GetCollection<Event>("Events");
+            await mongoCollection.DeleteOneAsync(p => p.EventId == id);
+        }
+
+        public async Task UpdateEvent(Event @event)
+        {
+            var mongoCollection = _databaseContext.GetMongoDatabase().GetCollection<Event>("Events");
+            var filter = Builders<Event>.Filter
+                .Where(p=>p.EventId==@event.EventId);
+            var update = Builders<Event>.Update
+                .Set(p => p.EventId, @event.EventId)
+                .Set(p => p.Beginning, @event.Beginning)
+                .Set(p => p.End, @event.End)
+                .Set(p => p.AreaId, @event.AreaId)
+                .Set(p => p.Description, @event.Description)
+                .Set(p => p.ImageId, @event.ImageId);
             
-            return Events;
-            
-        }
-        public void AddEvent(Event @event)
-        {
-            Events.Add(@event);
+           await mongoCollection.UpdateOneAsync(filter, update);
         }
 
-        public void RemoveEvent(Guid id)
+        public async Task<bool> HaveEvent(Guid eventId)
         {
-            Event ?deletobject=Events.Where(p => p.EventId == id).FirstOrDefault();
-            Events.Remove(deletobject!);
-        }
-
-        public void UpdateEvent(Event @event)
-        {
-            Event ?updateobject= Events.Where(p => p.EventId == @event.EventId).FirstOrDefault();
-            updateobject.EventName = @event.EventName;
-            updateobject.Beginning = @event.Beginning;
-            updateobject.End = @event.End;
-            updateobject.AreaId = @event.AreaId;
-            updateobject.Description = @event.Description;
-            updateobject.ImageId = @event.ImageId;
-        }
-
-        public bool HaveEvent(Guid EventId)
-        {
-            var eventhave = Events.Where(p => p.EventId==EventId).FirstOrDefault();
-            if(eventhave != null)
-            {
-                return true;
-            }
-            return false;
+            var mongoCollection = _databaseContext.GetMongoDatabase().GetCollection<Event>("Events");
+            var eventObj = await mongoCollection.Find(p => p.EventId == eventId).FirstOrDefaultAsync();
+            return eventObj != null;
         }
     }
 }

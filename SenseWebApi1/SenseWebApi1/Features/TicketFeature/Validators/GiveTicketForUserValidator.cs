@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 using SenseWebApi1.Context;
-using SenseWebApi1.Features.TicketFeature.Commands.TicketsCommand;
+using SenseWebApi1.Features.TicketFeature.TicketsCommand;
 
 namespace SenseWebApi1.Features.TicketFeature.Validators
 {
@@ -8,7 +8,7 @@ namespace SenseWebApi1.Features.TicketFeature.Validators
     {
         public GiveTicketForUserValidator(ITicketContext ticketContext)
         {
-            RuleFor(p => p.TicketId).NotNull().NotEmpty().WithMessage("Пустое id события").Must(ticketContext.TicketHave).WithMessage("Такого билета нет");
+            RuleFor(p => p.TicketId).NotNull().NotEmpty().WithMessage("Пустое id события").MustAsync((id,tocken)=>ticketContext.TicketHave(id)).WithMessage("Такого билета нет");
             RuleFor(p => p.OwnerId).NotNull().NotEmpty().WithMessage("Пустое id пользователя");
         }
     }

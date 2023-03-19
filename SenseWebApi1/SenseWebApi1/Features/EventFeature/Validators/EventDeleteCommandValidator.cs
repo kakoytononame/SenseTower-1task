@@ -1,5 +1,5 @@
 ﻿using FluentValidation;
-using SenseWebApi1.Features.MyFeature.Commands.EventsCommands;
+using SenseWebApi1.Features.EventFeature.EventsCommands;
 using System.Data;
 
 namespace SenseWebApi1.Features.MyFeature.Validators

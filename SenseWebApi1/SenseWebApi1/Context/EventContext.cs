@@ -16,7 +16,7 @@ namespace SenseWebApi1.Context
             _databaseContext = databaseContext;
 
             databaseContext.EventIniz();
-            databaseContext.TicketIniz();
+            
         }
         public async Task<List<Event>> GetEvents()
         {
@@ -42,15 +42,33 @@ namespace SenseWebApi1.Context
             var mongoCollection = _databaseContext.GetMongoDatabase().GetCollection<Event>("Events");
             var filter = Builders<Event>.Filter
                 .Where(p=>p.EventId==@event.EventId);
-            var update = Builders<Event>.Update
-                .Set(p => p.EventId, @event.EventId)
-                .Set(p => p.Beginning, @event.Beginning)
-                .Set(p => p.End, @event.End)
-                .Set(p => p.AreaId, @event.AreaId)
-                .Set(p => p.Description, @event.Description)
-                .Set(p => p.ImageId, @event.ImageId);
+            if (@event.Tickets != null)
+            {
+                var updatewittick = Builders<Event>.Update
+                    
+                    .Set(p => p.Beginning, @event.Beginning)
+                    .Set(p => p.End, @event.End)
+                    .Set(p => p.AreaId, @event.AreaId)
+                    .Set(p => p.Description, @event.Description)
+                    .Set(p => p.ImageId, @event.ImageId)
+                    .Set(p => p.Tickets, @event.Tickets)
+                    .Set(p => p.IsHavePlaces, @event.IsHavePlaces);
+                await mongoCollection.UpdateOneAsync(filter, updatewittick);
+            }
+            else
+            {
+                var update = Builders<Event>.Update
+                    
+                    .Set(p => p.Beginning, @event.Beginning)
+                    .Set(p => p.End, @event.End)
+                    .Set(p => p.AreaId, @event.AreaId)
+                    .Set(p => p.Description, @event.Description)
+                    .Set(p => p.ImageId, @event.ImageId)
+                    .Set(p => p.IsHavePlaces, @event.IsHavePlaces);
+                await mongoCollection.UpdateOneAsync(filter, update);
+            }
             
-           await mongoCollection.UpdateOneAsync(filter, update);
+           
         }
 
         public async Task<bool> HaveEvent(Guid eventId)
@@ -58,6 +76,14 @@ namespace SenseWebApi1.Context
             var mongoCollection = _databaseContext.GetMongoDatabase().GetCollection<Event>("Events");
             var eventObj = await mongoCollection.Find(p => p.EventId == eventId).FirstOrDefaultAsync();
             return eventObj != null;
+        }
+
+        public async Task<bool> CheckPlaceForEvent(Guid eventId,int place)
+        {
+            var mongoCollection = _databaseContext.GetMongoDatabase().GetCollection<Event>("Events");
+            var eventObj = await mongoCollection.Find(p => p.EventId == eventId).FirstOrDefaultAsync();
+            var placeObj = eventObj.Tickets.FirstOrDefault(p=>p.Place==place);
+            return placeObj != null;
         }
     }
 }

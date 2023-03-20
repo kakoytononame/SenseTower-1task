@@ -40,6 +40,6 @@ namespace SenseWebApi1.Features.EventFeature
         // ReSharper disable once CollectionNeverUpdated.Global
         public List<Ticket>? Tickets { get; set; }
 
-
+        public bool IsHavePlaces { get; set; }
     }
 }

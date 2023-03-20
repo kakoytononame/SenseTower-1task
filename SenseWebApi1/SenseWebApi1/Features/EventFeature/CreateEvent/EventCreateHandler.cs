@@ -22,6 +22,7 @@ namespace SenseWebApi1.Features.EventFeature.CreateEvent
             @event.Beginning = command.Beginning;
             @event.Description = command.Description;
             @event.EventName = command.EventName;
+            @event.IsHavePlaces = command.IsHavePlaces;
             await _eventContext.AddEvent(@event);
             return @event.EventId;
         }

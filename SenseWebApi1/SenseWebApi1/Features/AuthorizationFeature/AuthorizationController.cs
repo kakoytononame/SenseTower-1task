@@ -39,7 +39,7 @@ namespace SenseWebApi1.Features.AuthorizationFeature
 
             var content = new StringContent(JsonSerializer.Serialize(value), Encoding.UTF8, "application/json");
             var response = await Client.PostAsync("http://identityserver0:3000/stub/authstub", content);
-            //var response = await Client.PostAsync("http://localhost:5006/stub/authstub", content);
+            //var response = await Client.PostAsync("http://localhost:5000/stub/authstub", content);
             var responseString = await response.Content.ReadAsStringAsync();
             ControllerContext.HttpContext.Response.Cookies.Append(".AspNetCore.Application.Id", responseString, new CookieOptions
             {

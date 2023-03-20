@@ -69,7 +69,7 @@ namespace SenseWebApi1.Features.TicketFeature
         /// <response code="500">Ошибка сервера </response>
         [HttpPut("tickets/{ticketId}")]
 
-        public async Task<IActionResult> GiveTicketForUser(Guid ticketId, Guid ownerId,string place)
+        public async Task<IActionResult> GiveTicketForUser( Guid ticketId, Guid ownerId,int place)
         {
             var result = await _mediator.Send(new GiveTicketForUserCommand() { TicketId = ticketId, OwnerId = ownerId, Place = place});
             return Ok(new ScResult<Guid>()
@@ -92,7 +92,7 @@ namespace SenseWebApi1.Features.TicketFeature
         ///     }
         ///
         /// </remarks>
-        /// <response code="200">Возвращает bool добавленны билеты </response>
+        /// <response code="200">Возвращает bool  </response>
         /// <response code="401">Возвращает unauthorized </response>
         /// <response code="500">Ошибка сервера </response>
         [HttpGet("tickets")]

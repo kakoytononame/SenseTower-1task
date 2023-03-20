@@ -6,6 +6,6 @@
 
         public Guid? OwnerId { get; set; }
 
-        public string? Place { get; set; }
+        public int? Place { get; set; }
     }
 }

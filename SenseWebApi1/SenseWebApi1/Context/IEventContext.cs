@@ -13,5 +13,7 @@ namespace SenseWebApi1.Context
         Task UpdateEvent(Event @event);
 
         Task<bool> HaveEvent(Guid eventId);
+
+        Task<bool> CheckPlaceForEvent(Guid eventId,int place);
     }
 }

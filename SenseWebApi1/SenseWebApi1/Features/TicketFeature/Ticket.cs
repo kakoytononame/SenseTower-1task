@@ -12,8 +12,8 @@ namespace SenseWebApi1.Features.TicketFeature
 
         public Guid? OwnerId { get; set; }
 
-        public string? Place { get; set; }
+        public int? Place { get; set; }
 
-        public Guid EventId { get; set; }
+        
     }
 }

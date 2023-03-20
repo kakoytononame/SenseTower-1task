@@ -17,6 +17,7 @@ public class EventCreateValidatorTest
             End = DateTime.Parse("2023-03-13T20:10:17.5776731+03:00"),
             AreaId = Guid.Parse("ec747803-890d-4ce4-8958-64cfea4e77a7"),
             ImageId = Guid.Parse("bda59f4e-c60b-411b-87e5-61a73125979b"),
+            IsHavePlaces = true
         };
         var validator = new EventCreateValidator(new AreaContext(), new ImageContext());
         var validationResult=await validator.ValidateAsync(testObj);

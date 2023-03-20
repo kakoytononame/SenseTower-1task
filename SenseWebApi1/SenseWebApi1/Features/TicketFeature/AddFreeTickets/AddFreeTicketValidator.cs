@@ -7,8 +7,8 @@ namespace SenseWebApi1.Features.TicketFeature.AddFreeTickets
     {
         public AddFreeTicketValidator(ITicketContext ticketContext,IEventContext eventContext)
         {
-            RuleFor(p => p.EventId).NotNull().NotEmpty().WithMessage("Пустое id события").MustAsync((id,tocken)=>eventContext.HaveEvent(id)).WithMessage("Такого события нет");
-            RuleFor(p=>p.Countoftickets).NotNull().NotEmpty().WithMessage("Сколько именно вы хотите добавить билетов ?").LessThan(100);
+            RuleFor(p => p.EventId).NotNull().NotEmpty().WithMessage("Пустое id события").MustAsync((id,tocken)=>eventContext.HaveEvent(id)).WithMessage("Такого события нет").WithErrorCode("400"); ;
+            RuleFor(p=>p.Countoftickets).NotNull().NotEmpty().WithMessage("Сколько именно вы хотите добавить билетов ?").LessThan(100).WithErrorCode("400"); ;
         }
     }
 }

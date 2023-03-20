@@ -1,5 +1,4 @@
-﻿using Microsoft.Extensions.Options;
-using MongoDB.Driver;
+﻿using MongoDB.Driver;
 
 namespace SenseWebApi1.MongoDB
 {
@@ -8,6 +7,6 @@ namespace SenseWebApi1.MongoDB
         IMongoDatabase GetMongoDatabase();
         Task EventIniz();
         
-        Task TicketIniz();
+        //Task TicketIniz();
     }
 }

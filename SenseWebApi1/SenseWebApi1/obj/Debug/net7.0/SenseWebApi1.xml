@@ -127,6 +127,15 @@
             <response code="401">Возвращает unauthorized </response>
             <response code="500">Ошибка сервера </response>
         </member>
+        <member name="M:SenseWebApi1.Features.EventFeature.MainController.CheckPlaceForEvent(System.Guid,System.Int32)">
+            <summary>
+            Проверка на наличие места в мероприятии
+            </summary>
+            <returns></returns>
+            <response code="200">Возвращает bool  </response>
+            <response code="401">Возвращает unauthorized </response>
+            <response code="500">Ошибка сервера </response>
+        </member>
         <member name="P:SenseWebApi1.Features.EventFeature.EventDto.EventId">
             <summary>
             The name of the product
@@ -153,7 +162,7 @@
              <response code="401">Возвращает unauthorized </response>
              <response code="500">Ошибка сервера </response>
         </member>
-        <member name="M:SenseWebApi1.Features.TicketFeature.TicketsController.GiveTicketForUser(System.Guid,System.Guid,System.String)">
+        <member name="M:SenseWebApi1.Features.TicketFeature.TicketsController.GiveTicketForUser(System.Guid,System.Guid,System.Int32)">
              <summary>
              Дать пользователю билет
              </summary>
@@ -189,7 +198,7 @@
                  }
             
              </remarks>
-             <response code="200">Возвращает bool добавленны билеты </response>
+             <response code="200">Возвращает bool  </response>
              <response code="401">Возвращает unauthorized </response>
              <response code="500">Ошибка сервера </response>
         </member>

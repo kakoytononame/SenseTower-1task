@@ -1,15 +1,13 @@
 ﻿using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using SenseWebApi1.Context;
-using System.Reflection.Metadata;
-using System.Threading;
 using SC.Internship.Common.ScResult;
 using Microsoft.AspNetCore.Authorization;
 using SenseWebApi1.Features.EventFeature.CreateEvent;
 using SenseWebApi1.Features.EventFeature.DeleteEvent;
 using SenseWebApi1.Features.EventFeature.GetEvents;
 using SenseWebApi1.Features.EventFeature.UpdateEvent;
+using SenseWebApi1.Features.EventFeature.CheckPlaceForEvent;
 
 namespace SenseWebApi1.Features.EventFeature
 {
@@ -19,6 +17,7 @@ namespace SenseWebApi1.Features.EventFeature
     public class MainController : ControllerBase
     {
         private readonly IMediator _mediator;
+        // ReSharper disable once NotAccessedField.Local
         private readonly IMapper _mapper;
 
 
@@ -82,7 +81,7 @@ namespace SenseWebApi1.Features.EventFeature
         /// <response code="200">Возвращает данные об измененном событии </response>
         /// <response code="401">Возвращает unauthorized </response>
         /// <response code="500">Ошибка сервера </response>
-        [HttpPut("events/{eventId}")]
+        [HttpPut("events")]
 
         public async Task<IActionResult> ChangeEvent(EventUpdateCommand eventUpdateCommand)
         {
@@ -130,6 +129,30 @@ namespace SenseWebApi1.Features.EventFeature
             var result = await _mediator.Send(new GetEventCommand());
 
             return Ok(new ScResult<IEnumerable<EventDto>>()
+            {
+                Result = result
+            });
+        }
+        /// <summary>
+        /// Проверка на наличие места в мероприятии
+        /// </summary>
+        /// <returns></returns>
+        /// <response code="200">Возвращает bool  </response>
+        /// <response code="401">Возвращает unauthorized </response>
+        /// <response code="500">Ошибка сервера </response>
+        
+        [HttpGet("events/{eventId}")]
+        public async Task<IActionResult> CheckPlaceForEvent(Guid eventId,int place)
+        {
+
+
+            var result = await _mediator.Send(new CheckPlaceForEventCommand()
+            {
+                eventId = eventId,
+                place = place
+            });
+
+            return Ok(new ScResult<bool>()
             {
                 Result = result
             });

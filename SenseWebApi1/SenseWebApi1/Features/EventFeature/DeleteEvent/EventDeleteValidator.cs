@@ -7,7 +7,7 @@ namespace SenseWebApi1.Features.EventFeature.DeleteEvent
         public EventDeleteCommandValidator()
         {
             
-            RuleFor(p => p.EventId).NotEmpty().WithMessage("Пустое id события");
+            RuleFor(p => p.EventId).NotEmpty().WithMessage("Пустое id события").WithErrorCode("400");
         }
     }
 }

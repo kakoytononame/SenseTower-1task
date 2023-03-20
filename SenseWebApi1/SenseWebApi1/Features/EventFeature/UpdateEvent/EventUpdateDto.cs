@@ -2,7 +2,7 @@
 
 public class EventUpdateDto
 {
-    public Guid EventId { get; set; }
+    
     
     public DateTime Beginning { get; set; }
 
@@ -16,4 +16,5 @@ public class EventUpdateDto
 
     public Guid AreaId { get; set; }
     
+    public bool IsHavePlaces { get; set; }
 }

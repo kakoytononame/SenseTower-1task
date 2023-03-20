@@ -26,6 +26,6 @@ namespace SenseWebApi1.Features.EventFeature
         // ReSharper disable once CollectionNeverQueried.Global
         public List<TicketDto>? Tickets { get; set; }
 
-        public bool IsHaveFreePlaces { get; set; }
+        public bool IsHavePlaces { get; set; }
     }
 }

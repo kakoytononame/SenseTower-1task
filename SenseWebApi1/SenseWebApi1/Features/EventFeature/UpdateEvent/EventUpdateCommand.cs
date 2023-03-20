@@ -16,5 +16,10 @@ namespace SenseWebApi1.Features.EventFeature.UpdateEvent
         public Guid ImageId { get; set; }
 
         public Guid AreaId { get; set; }
+
+        // ReSharper disable once UnusedAutoPropertyAccessor.Global
+        public bool IsHavePlaces { get; set; }
+
+
     }
 }

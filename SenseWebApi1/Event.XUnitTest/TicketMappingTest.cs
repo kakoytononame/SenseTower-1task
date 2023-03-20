@@ -19,9 +19,8 @@ public class TicketMappingTest
         var ticketObj = new Ticket()
         {
             Id = "6416f87ed4349ac4a67bfe80",
-            EventId = Guid.Parse("491d776d-523a-4afa-9b36-a1c46fa126da"),
             OwnerId = Guid.Parse("8be7a2a6-4dd8-4390-af8d-c4c78122d5de"),
-            Place = "1"
+            Place = 1
         };
         
         

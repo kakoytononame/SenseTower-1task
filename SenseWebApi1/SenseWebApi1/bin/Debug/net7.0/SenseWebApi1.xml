@@ -4,7 +4,57 @@
         <name>SenseWebApi1</name>
     </assembly>
     <members>
-        <member name="M:SenseWebApi1.Features.MyFeature.MyFeatureController.MainController.CreateEvent(SenseWebApi1.domain.Dtos.EventDto)">
+        <member name="M:SenseWebApi1.Features.AuthorizationFeature.AuthorizationController.LogIn(System.String,System.String)">
+             <summary>
+             Запрос авторизации
+             </summary>
+             <returns></returns>
+             <remarks>
+             Пример входных данных:
+            
+                 POST /stub/authstub
+                 {
+                    "login": "admin",Тип данных:string
+                    "password": "12345",Тип данных:string
+                    
+                 }
+            
+             </remarks>
+             <response code="200">Возвращает id добавленного события </response>
+             <response code="401">Возвращает unauthorized </response>
+             <response code="500">Ошибка сервера </response>
+        </member>
+        <member name="P:SenseWebApi1.Features.EventFeature.Event.EventId">
+            <summary>
+            Id мероприятия
+            </summary>
+        </member>
+        <member name="P:SenseWebApi1.Features.EventFeature.Event.Beginning">
+            <summary>
+            Момент начала мероприятия
+            </summary>
+        </member>
+        <member name="P:SenseWebApi1.Features.EventFeature.Event.End">
+            <summary>
+            Момент конца мероприятия
+            </summary>
+        </member>
+        <member name="P:SenseWebApi1.Features.EventFeature.Event.EventName">
+            <summary>
+            Название мероприятия
+            </summary>
+        </member>
+        <member name="P:SenseWebApi1.Features.EventFeature.Event.Description">
+            <summary>
+            Описание мероприятия
+            </summary>
+        </member>
+        <member name="P:SenseWebApi1.Features.EventFeature.Event.ImageId">
+            <summary>
+            Id картинки
+            </summary>
+        </member>
+        <member name="M:SenseWebApi1.Features.EventFeature.MainController.CreateEvent(SenseWebApi1.Features.EventFeature.CreateEvent.EventCreateCommand)">
              <summary>
              Создание события
              </summary>
@@ -14,7 +64,7 @@
             
                  POST /events
                  {
-                    "eventId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",Тип данных:Guid
+                    
                     "beginning": "2023-03-14T16:52:06.478Z",Тип данных:DateTime
                     "end": "2023-03-14T16:52:06.478Z",Тип данных:DateTime
                     "eventName": "string",Тип данных:String
@@ -28,7 +78,7 @@
              <response code="401">Возвращает unauthorized </response>
              <response code="500">Ошибка сервера </response>
         </member>
-        <member name="M:SenseWebApi1.Features.MyFeature.MyFeatureController.MainController.ChangeEvent(SenseWebApi1.domain.Dtos.EventDto)">
+        <member name="M:SenseWebApi1.Features.EventFeature.MainController.ChangeEvent(SenseWebApi1.Features.EventFeature.UpdateEvent.EventUpdateCommand)">
              <summary>
              Изменение события
              </summary>
@@ -52,7 +102,7 @@
              <response code="401">Возвращает unauthorized </response>
              <response code="500">Ошибка сервера </response>
         </member>
-        <member name="M:SenseWebApi1.Features.MyFeature.MyFeatureController.MainController.DeleteEvent(System.Guid)">
+        <member name="M:SenseWebApi1.Features.EventFeature.MainController.DeleteEvent(System.Guid)">
              <summary>
              Удаление события
              </summary>
@@ -68,7 +118,7 @@
              <response code="401">Возвращает unauthorized </response>
              <response code="500">Ошибка сервера </response>
         </member>
-        <member name="M:SenseWebApi1.Features.MyFeature.MyFeatureController.MainController.GetEvents">
+        <member name="M:SenseWebApi1.Features.EventFeature.MainController.GetEvents">
             <summary>
             Получение событий из базы данных
             </summary>
@@ -77,27 +127,22 @@
             <response code="401">Возвращает unauthorized </response>
             <response code="500">Ошибка сервера </response>
         </member>
-        <member name="M:SenseWebApi1.Features.AuthorizationFeature.Controller.AuthorizationController.LogIn(System.String,System.String)">
-             <summary>
-             Запрос авторизации
-             </summary>
-             <returns></returns>
-             <remarks>
-             Пример входных данных:
-            
-                 POST /stub/authstub
-                 {
-                    "login": "admin",Тип данных:string
-                    "password": "12345",Тип данных:string
-                    
-                 }
-            
-             </remarks>
-             <response code="200">Возвращает id добавленного события </response>
-             <response code="401">Возвращает unauthorized </response>
-             <response code="500">Ошибка сервера </response>
+        <member name="M:SenseWebApi1.Features.EventFeature.MainController.CheckPlaceForEvent(System.Guid,System.Int32)">
+            <summary>
+            Проверка на наличие места в мероприятии
+            </summary>
+            <returns></returns>
+            <response code="200">Возвращает bool  </response>
+            <response code="401">Возвращает unauthorized </response>
+            <response code="500">Ошибка сервера </response>
         </member>
-        <member name="M:SenseWebApi1.Features.TicketFeature.Controller.TicketsController.AddFreeTickets(System.Guid,System.Int32)">
+        <member name="P:SenseWebApi1.Features.EventFeature.EventDto.EventId">
+            <summary>
+            The name of the product
+            </summary>
+            <example>Men's basketball shoes</example>
+        </member>
+        <member name="M:SenseWebApi1.Features.TicketFeature.TicketsController.AddFreeTickets(System.Guid,System.Int32)">
              <summary>
              Добавить бесплатные билеты
              </summary>
@@ -117,7 +162,7 @@
              <response code="401">Возвращает unauthorized </response>
              <response code="500">Ошибка сервера </response>
         </member>
-        <member name="M:SenseWebApi1.Features.TicketFeature.Controller.TicketsController.GiveTicketForUser(System.Guid,System.Guid)">
+        <member name="M:SenseWebApi1.Features.TicketFeature.TicketsController.GiveTicketForUser(System.Guid,System.Guid,System.Int32)">
              <summary>
              Дать пользователю билет
              </summary>
@@ -127,9 +172,9 @@
             
                  POST /tickets/{ticketId}
                  {
-                    "eventId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",Тип данных:Guid
-                    "ticketId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",Тип данных:Guid
-                   
+                     "ticketId": "8299f9f5-6176-4595-9004-bd01beafeb25",
+                     "ownerId": "f4d26a57-0725-4796-82bf-2be457bbfcd4",
+                     "place": "4"
                  }
             
              </remarks>
@@ -137,7 +182,7 @@
              <response code="401">Возвращает unauthorized </response>
              <response code="500">Ошибка сервера </response>
         </member>
-        <member name="M:SenseWebApi1.Features.TicketFeature.Controller.TicketsController.CheckTicketForUser(System.Guid,System.Guid)">
+        <member name="M:SenseWebApi1.Features.TicketFeature.TicketsController.CheckTicketForUser(System.Guid,System.Guid)">
              <summary>
              Проверить билет у пользователя
              </summary>
@@ -153,45 +198,9 @@
                  }
             
              </remarks>
-             <response code="200">Возвращает bool добавленны билеты </response>
+             <response code="200">Возвращает bool  </response>
              <response code="401">Возвращает unauthorized </response>
              <response code="500">Ошибка сервера </response>
-        </member>
-        <member name="P:SenseWebApi1.domain.Dtos.EventDto.EventId">
-            <summary>
-            The name of the product
-            </summary>
-            <example>Men's basketball shoes</example>
-        </member>
-        <member name="P:SenseWebApi1.domain.Entities.Event.EventId">
-            <summary>
-            Id мероприятия
-            </summary>
-        </member>
-        <member name="P:SenseWebApi1.domain.Entities.Event.Beginning">
-            <summary>
-            Момент начала мероприятия
-            </summary>
-        </member>
-        <member name="P:SenseWebApi1.domain.Entities.Event.End">
-            <summary>
-            Момент конца мероприятия
-            </summary>
-        </member>
-        <member name="P:SenseWebApi1.domain.Entities.Event.EventName">
-            <summary>
-            Название мероприятия
-            </summary>
-        </member>
-        <member name="P:SenseWebApi1.domain.Entities.Event.Description">
-            <summary>
-            Описание мероприятия
-            </summary>
-        </member>
-        <member name="P:SenseWebApi1.domain.Entities.Event.ImageId">
-            <summary>
-            Id картинки
-            </summary>
         </member>
     </members>
 </doc>

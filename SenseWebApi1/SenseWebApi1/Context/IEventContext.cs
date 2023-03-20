@@ -1,16 +1,19 @@
 ﻿
-using SenseWebApi1.domain.Entities;
+using SenseWebApi1.Features.TicketFeature;
+using SenseWebApi1.Features.EventFeature;
 using static System.Net.Mime.MediaTypeNames;
 
 namespace SenseWebApi1.Context
 {
     public interface IEventContext
     {
-        List<Event> GetEvents();
-        void AddEvent(Event @event);
-        void RemoveEvent(Guid id);
-        void UpdateEvent(Event @event);
+        Task<List<Event>> GetEvents();
+        Task AddEvent(Event @event);
+        Task RemoveEvent(Guid id);
+        Task UpdateEvent(Event @event);
 
-        bool HaveEvent(Guid EventId);
+        Task<bool> HaveEvent(Guid eventId);
+
+        Task<bool> CheckPlaceForEvent(Guid eventId,int place);
     }
 }

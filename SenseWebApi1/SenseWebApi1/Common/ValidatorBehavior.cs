@@ -1,11 +1,10 @@
 ﻿using FluentValidation;
 using MediatR;
-using Microsoft.AspNetCore.DataProtection.KeyManagement;
 using SenseWebApi1.domain.Exceptions;
 
-namespace SenseWebApi1.Features.MyFeature.Validators
+namespace SenseWebApi1.Common
 {
-    public class ValidatorBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
+    public class ValidatorBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse> where TRequest : notnull
     {
         private readonly IEnumerable<IValidator<TRequest>> _validators;
 
@@ -14,36 +13,40 @@ namespace SenseWebApi1.Features.MyFeature.Validators
 
 
 
-        public Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
+        public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
         {
-            
-            // Invoke the validators
-            var failures = _validators
-                .Select(validator => validator.Validate(request))
-                .SelectMany(result => result.Errors)
-                .ToArray();
-                
-                
 
-            if (failures.Length > 0)
+            // Invoke the validators
+            var errors = await Task.WhenAll(_validators
+                .Select(async p => await p.ValidateAsync(request, cancellationToken)));
+
+            var errorsDictionary = errors.SelectMany(x => x.Errors)
+                .Where(x => x != null)
+                .GroupBy(
+                    x => x.PropertyName,
+                    x => x.ErrorMessage,
+                    (propertyName, errorMessages) => new
+                    {
+                        Key = propertyName,
+                        Values = errorMessages.Distinct().ToList(),
+                    })
+                .ToDictionary(x => x.Key, x => x.Values);
+
+
+
+
+            if (errorsDictionary.Count > 0)
             {
                 // Map the validation failures and throw an error,
                 // this stops the execution of the request
-                var errors = failures
-                    .GroupBy(x => x.PropertyName, y => y.ErrorMessage, (propertyname, errormessages) =>
-                new
-                {
-                    Key = propertyname,
-                    Values = errormessages.ToList(),
-                })
-                    .ToDictionary(x=>x.Key,y=>y.Values);
+                
 
-                throw new ExceptionsAdapter(errors);
+                throw  new ExceptionsAdapter(errorsDictionary);
             }
 
             // Invoke the next handler
             // (can be another pipeline behavior or the request handler)
-            return next();
+            return await next();
         }
     }
 }

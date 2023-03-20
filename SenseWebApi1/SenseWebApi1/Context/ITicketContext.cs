@@ -1,16 +1,18 @@
-﻿using SenseWebApi1.domain.Dtos;
-using SenseWebApi1.domain.Entities;
+﻿
+using SenseWebApi1.Features.TicketFeature;
 
 namespace SenseWebApi1.Context
 {
     public interface ITicketContext
     {
-        void AddFreeTickets(Guid EventId,int CountOfTickets);
-        bool UserHaveTicket(Guid userId, Guid ticketId);
-        void GiveTicketForUser(Guid userId, Guid ticketId);
+        Task AddFreeTickets(Guid eventId,int countOfTickets);
+        Task<bool> UserHaveTicket(Guid userId, Guid ticketId);
+        Task GiveTicketForUser(Guid userId, Guid ticketId,int? place);
 
-        bool CheckTicketForUser(Guid userId,Guid EventId);
+        Task<bool> CheckTicketForUser(Guid userId,Guid eventId);
 
-        bool TicketHave(Guid ticketId);
+        Task<bool> TicketHave(Guid ticketId);
+
+        Task<List<Ticket>> GetTickets(Guid eventId);
     }
 }

@@ -1,21 +1,22 @@
-﻿using SenseWebApi1.domain.Entities;
+﻿using SenseWebApi1.Features.EventFeature;
 
 namespace SenseWebApi1.Context
 {
     public class ImageContext:IImageContext
     {
-        private List<Image> Images = new List<Image>();
+        // ReSharper disable once FieldCanBeMadeReadOnly.Local
+        private List<Image> _images = new List<Image>();
 
         public ImageContext()
         {
-            Images.Add(new Image()
+            _images.Add(new Image()
             {
-                ImageId=Guid.Parse("074a2eb2-4b45-4ac8-88ac-12b5dc52b252"),
+                ImageId=Guid.Parse("bda59f4e-c60b-411b-87e5-61a73125979b"),
                 src="image 1"
             });
-            Images.Add(new Image()
+            _images.Add(new Image()
             {
-                ImageId = Guid.Parse("9f4813cd-6d37-4393-b7ce-f2cc2c81ef3b"),
+                ImageId = Guid.Parse("ccd50edc-a02f-48a8-8ae8-70b47dd087d8"),
                 src = "image 2"
             });
         }
@@ -23,12 +24,8 @@ namespace SenseWebApi1.Context
 
         public bool IsHave (Guid id)
         {
-            var image=Images.Where(p=>p.ImageId==id).FirstOrDefault();
-            if(image==null) 
-            {
-                return false;
-            }
-            return true;
+            var image=_images.FirstOrDefault(p => p.ImageId==id);
+            return image != null;
         }
     }
 }

@@ -1,16 +1,9 @@
-﻿using System.Collections.Generic;
-using System;
-using System.Net;
-using System.Text.Json;
-using Microsoft.AspNetCore.Diagnostics;
-using SenseWebApi1.domain.Exceptions;
-using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Logging;
+﻿using System.Text.Json;
 using SC.Internship.Common.Exceptions;
 using SC.Internship.Common.ScResult;
-using System.Linq;
+using SenseWebApi1.domain.Exceptions;
 
-namespace SenseWebApi1.Features.MyFeature.Middlewares
+namespace SenseWebApi1.Common.Middlewares
 {
     public class GlobalErrorHandler
     {
@@ -52,23 +45,21 @@ namespace SenseWebApi1.Features.MyFeature.Middlewares
             context.Response.ContentType = "application/json";
             var response = context.Response;
             context.Response.StatusCode = 400;
+            // ReSharper disable once SuggestVarOrType_BuiltInTypes
             string result = exception.Message;
             _logger.LogError(exception.Message);
-            var jsonerror = JsonSerializer.Serialize(new ScResult() { Error = new ScError() { Message = result } });
-            await response.WriteAsync(jsonerror);
+            var jsonError = JsonSerializer.Serialize(new ScResult() { Error = new ScError() { Message = result } });
+            await response.WriteAsync(jsonError);
             
         }
         private async Task HandleExceptionAsync(HttpContext context, Dictionary<string, List<string>> errors)
         {
             context.Response.ContentType = "application/json";
-            string response = "";
-            
-            
             var dictionary=errors.ToDictionary(x=>x,y=>y);
             context.Response.StatusCode = 400;
-            var jsonerror = JsonSerializer.Serialize(new ScResult() { Error = new ScError() { ModelState = errors } });
-            _logger.LogError(response);
-            await context.Response.WriteAsync(jsonerror);
+            var jsonError = JsonSerializer.Serialize(new ScResult() { Error = new ScError() { ModelState = errors } });
+            _logger.LogError(jsonError);
+            await context.Response.WriteAsync(jsonError);
         }
     }
 }

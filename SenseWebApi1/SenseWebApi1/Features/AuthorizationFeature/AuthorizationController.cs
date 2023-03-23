@@ -28,18 +28,18 @@ namespace SenseWebApi1.Features.AuthorizationFeature
         /// <response code="200">Возвращает id добавленного события </response>
         /// <response code="401">Возвращает unauthorized </response>
         /// <response code="500">Ошибка сервера </response>
-        [HttpPost("stub/authstub")]
-        public async Task<IActionResult> LogIn(string login,string password)
+        [HttpPost("stub/authstub/")]
+        public async Task<IActionResult> LogIn([FromBody]AuthorizationDto authorizationDto)
         {
             var value = new
             {
-                login = login,
-                password = password
+                login = authorizationDto.Login,
+                password = authorizationDto.Password
             };
-
+            
             var content = new StringContent(JsonSerializer.Serialize(value), Encoding.UTF8, "application/json");
-            var response = await Client.PostAsync("http://identityserver0:3000/stub/authstub", content);
-            //var response = await Client.PostAsync("http://localhost:5000/stub/authstub", content);
+            //var response = await Client.PostAsync("http://identityserver0:3000/stub/authstub", content);
+            var response = await Client.PostAsync("http://localhost:5006/stub/authstub", content);
             var responseString = await response.Content.ReadAsStringAsync();
             ControllerContext.HttpContext.Response.Cookies.Append(".AspNetCore.Application.Id", responseString, new CookieOptions
             {
@@ -51,7 +51,7 @@ namespace SenseWebApi1.Features.AuthorizationFeature
             {
                 throw new ScException("Не верный логин или пароль");
             }
-            return Ok(response);
+            return Ok(responseString);
         }
     }
 }

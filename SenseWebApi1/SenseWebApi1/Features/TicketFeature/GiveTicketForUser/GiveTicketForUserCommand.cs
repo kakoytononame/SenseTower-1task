@@ -8,8 +8,6 @@ namespace SenseWebApi1.Features.TicketFeature.GiveTicketForUser
 
         public Guid OwnerId { get; set; }
         
-        public int? Place { get; set; }
-        
         
     }
 }

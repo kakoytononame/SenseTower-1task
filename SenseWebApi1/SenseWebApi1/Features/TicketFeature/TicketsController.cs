@@ -69,9 +69,10 @@ namespace SenseWebApi1.Features.TicketFeature
         /// <response code="500">Ошибка сервера </response>
         [HttpPut("tickets/{ticketId}")]
 
-        public async Task<IActionResult> GiveTicketForUser( Guid ticketId, Guid ownerId,int place)
+        public async Task<IActionResult> GiveTicketForUser( Guid ticketId, Guid ownerId)
         {
-            var result = await _mediator.Send(new GiveTicketForUserCommand() { TicketId = ticketId, OwnerId = ownerId, Place = place});
+            
+            var result = await _mediator.Send(new GiveTicketForUserCommand() { TicketId = ticketId, OwnerId = ownerId});
             return Ok(new ScResult<Guid>()
             {
                 Result = result

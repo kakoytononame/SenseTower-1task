@@ -19,12 +19,14 @@ namespace SenseWebApi1.Features.EventFeature
 
         public string? Description { get; set; }
 
-        public Guid ImageId { get; set; }
+        public Guid? ImageId { get; set; }
 
         public Guid AreaId { get; set; }
 
         // ReSharper disable once CollectionNeverQueried.Global
         public List<TicketDto>? Tickets { get; set; }
+        
+        public decimal Cost { get; set; } 
 
         public bool IsHavePlaces { get; set; }
     }

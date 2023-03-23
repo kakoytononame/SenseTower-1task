@@ -4,7 +4,7 @@
         <name>SenseWebApi1</name>
     </assembly>
     <members>
-        <member name="M:SenseWebApi1.Features.AuthorizationFeature.AuthorizationController.LogIn(System.String,System.String)">
+        <member name="M:SenseWebApi1.Features.AuthorizationFeature.AuthorizationController.LogIn(SenseWebApi1.Features.AuthorizationFeature.AuthorizationDto)">
              <summary>
              Запрос авторизации
              </summary>
@@ -162,7 +162,7 @@
              <response code="401">Возвращает unauthorized </response>
              <response code="500">Ошибка сервера </response>
         </member>
-        <member name="M:SenseWebApi1.Features.TicketFeature.TicketsController.GiveTicketForUser(System.Guid,System.Guid,System.Int32)">
+        <member name="M:SenseWebApi1.Features.TicketFeature.TicketsController.GiveTicketForUser(System.Guid,System.Guid)">
              <summary>
              Дать пользователю билет
              </summary>

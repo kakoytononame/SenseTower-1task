@@ -52,7 +52,8 @@ namespace SenseWebApi1.Context
                     .Set(p => p.Description, @event.Description)
                     .Set(p => p.ImageId, @event.ImageId)
                     .Set(p => p.Tickets, @event.Tickets)
-                    .Set(p => p.IsHavePlaces, @event.IsHavePlaces);
+                    .Set(p => p.IsHavePlaces, @event.IsHavePlaces)
+                    .Set(p=>p.Cost,@event.Cost);
                 await mongoCollection.UpdateOneAsync(filter, updatewittick);
             }
             else
@@ -64,7 +65,8 @@ namespace SenseWebApi1.Context
                     .Set(p => p.AreaId, @event.AreaId)
                     .Set(p => p.Description, @event.Description)
                     .Set(p => p.ImageId, @event.ImageId)
-                    .Set(p => p.IsHavePlaces, @event.IsHavePlaces);
+                    .Set(p => p.IsHavePlaces, @event.IsHavePlaces)
+                    .Set(p=>p.Cost,@event.Cost);
                 await mongoCollection.UpdateOneAsync(filter, update);
             }
             
@@ -82,7 +84,9 @@ namespace SenseWebApi1.Context
         {
             var mongoCollection = _databaseContext.GetMongoDatabase().GetCollection<Event>("Events");
             var eventObj = await mongoCollection.Find(p => p.EventId == eventId).FirstOrDefaultAsync();
+#pragma warning disable CS8604
             var placeObj = eventObj.Tickets.FirstOrDefault(p=>p.Place==place);
+#pragma warning restore CS8604
             return placeObj != null;
         }
     }

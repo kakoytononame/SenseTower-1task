@@ -50,10 +50,10 @@ namespace SenseWebApi1.Features.EventFeature
         /// <response code="500">Ошибка сервера </response>
         [HttpPost("events")]
 
-        public async Task<IActionResult> CreateEvent(EventCreateCommand eventCreateCommand)
+        public async Task<IActionResult> CreateEvent(EventCreateCommand eventCreateCommand,CancellationToken cancellationToken)
         {
-            
-            var result = await _mediator.Send(eventCreateCommand);
+           
+            var result = await _mediator.Send(eventCreateCommand,cancellationToken);
             return Ok(new ScResult<Guid>()
             {
                 Result = result
@@ -83,10 +83,10 @@ namespace SenseWebApi1.Features.EventFeature
         /// <response code="500">Ошибка сервера </response>
         [HttpPut("events")]
 
-        public async Task<IActionResult> ChangeEvent(EventUpdateCommand eventUpdateCommand)
+        public async Task<IActionResult> ChangeEvent(EventUpdateCommand eventUpdateCommand,CancellationToken cancellationToken)
         {
             
-            var result = await _mediator.Send(eventUpdateCommand);
+            var result = await _mediator.Send(eventUpdateCommand,cancellationToken);
             return Ok(new ScResult<EventUpdateDto>()
             {
                 Result = result
@@ -108,10 +108,11 @@ namespace SenseWebApi1.Features.EventFeature
         /// <response code="500">Ошибка сервера </response>
         [HttpDelete("events/{eventId}")]
 
-        public async Task<IActionResult> DeleteEvent(Guid eventId)
+        public async Task<IActionResult> DeleteEvent(Guid eventId,CancellationToken cancellationToken)
         {
-            await _mediator.Send(new EventDeleteCommand() { EventId = eventId });
+            await _mediator.Send(new EventDeleteCommand() { EventId = eventId },cancellationToken);
             return Ok(new ScResult());
+            
         }
 
         /// <summary>
@@ -122,11 +123,11 @@ namespace SenseWebApi1.Features.EventFeature
         /// <response code="401">Возвращает unauthorized </response>
         /// <response code="500">Ошибка сервера </response>
         [HttpGet("events")]
-        public async Task<IActionResult> GetEvents()
+        public async Task<IActionResult> GetEvents(CancellationToken cancellationToken)
         {
 
 
-            var result = await _mediator.Send(new GetEventCommand());
+            var result = await _mediator.Send(new GetEventCommand(),cancellationToken);
 
             return Ok(new ScResult<IEnumerable<EventDto>>()
             {
@@ -142,7 +143,7 @@ namespace SenseWebApi1.Features.EventFeature
         /// <response code="500">Ошибка сервера </response>
         
         [HttpGet("events/{eventId}")]
-        public async Task<IActionResult> CheckPlaceForEvent(Guid eventId,int place)
+        public async Task<IActionResult> CheckPlaceForEvent(Guid eventId,int place,CancellationToken cancellationToken)
         {
 
 
@@ -150,7 +151,7 @@ namespace SenseWebApi1.Features.EventFeature
             {
                 eventId = eventId,
                 place = place
-            });
+            },cancellationToken);
 
             return Ok(new ScResult<bool>()
             {

@@ -7,6 +7,5 @@ namespace SenseWebApi1.MongoDB
         IMongoDatabase GetMongoDatabase();
         Task EventIniz();
         
-        //Task TicketIniz();
     }
 }

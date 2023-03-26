@@ -4,18 +4,17 @@ using SenseWebApi1.Context;
 
 namespace SenseWebApi1.Features.EventFeature.UpdateEvent
 {
-    public class EventUpdateCommandHandler : IRequestHandler<EventUpdateCommand, EventUpdateDto>
+    // ReSharper disable once UnusedType.Global
+    public class EventUpdateHandler : IRequestHandler<EventUpdateCommand, EventUpdateDto>
     {
         private readonly IEventContext _eventContext;
         private readonly IMapper _mapper;
-        private readonly IImageContext _imageContext;
-        private readonly IAreaContext _areaContext;
-        public EventUpdateCommandHandler(IEventContext eventContext, IMapper mapper, IImageContext imageContext, IAreaContext areaContext)
+
+        public EventUpdateHandler(IEventContext eventContext, IMapper mapper)
         {
             _eventContext = eventContext;
             _mapper = mapper;
-            _imageContext = imageContext;
-            _areaContext = areaContext;
+
 
         }
         public async Task<EventUpdateDto> Handle(EventUpdateCommand request, CancellationToken cancellationToken)

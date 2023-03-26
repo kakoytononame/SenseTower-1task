@@ -1,33 +1,31 @@
-﻿using SenseWebApi1.Features.EventFeature;
-using static System.Net.Mime.MediaTypeNames;
+﻿using Newtonsoft.Json;
+using Polly;
+using Polly.Retry;
+using SC.Internship.Common.ScResult;
+using SenseWebApi1.Features.EventFeature;
+using SenseWebApi1.Services;
+
 
 namespace SenseWebApi1.Context
 {
     public class AreaContext:IAreaContext
     {
-        // ReSharper disable once FieldCanBeMadeReadOnly.Local
-        // ReSharper disable once InconsistentNaming
-        private List<Area> Areas = new List<Area>();
-        public AreaContext() 
+        private readonly RetryPolicy _retryPolicy=Policy.Handle<Exception>().Retry(2);
+        private readonly IHttpService _httpService;
+        public AreaContext(IHttpService httpService)
         {
-            Areas.Add(new Area()
-            {
-                AreaId=Guid.Parse("75d4e526-3cd6-4aa2-92f4-9e1ecc574f20"),
-                AreaName="Area 1"
-            });
-            Areas.Add(new Area()
-            {
-                AreaId = Guid.Parse("ec747803-890d-4ce4-8958-64cfea4e77a7"),
-                AreaName = "Area 2"
-            });
+            _httpService = httpService;
         }
-
-       
-
-        public bool IsHave(Guid id)
+        public async Task<bool> IsHave(Guid id)
         {
-            var area=Areas.FirstOrDefault(p => p.AreaId==id);
+            
+            var result = await _retryPolicy.Execute(()=>_httpService.GetSpaces("")) ;
+            //var imagesArray = JArray.Parse(result).ToObject<List<Area>>();
+            var areas = JsonConvert.DeserializeObject<ScResult<List<Area>>>(result)!;
+#pragma warning disable CS8604
+            var area=areas.Result.FirstOrDefault(p => p.Id==id);
             return area != null;
+            
         }
     }
 }

@@ -1,7 +1,6 @@
 ﻿
-using SenseWebApi1.Features.TicketFeature;
 using SenseWebApi1.Features.EventFeature;
-using static System.Net.Mime.MediaTypeNames;
+
 
 namespace SenseWebApi1.Context
 {
@@ -15,5 +14,9 @@ namespace SenseWebApi1.Context
         Task<bool> HaveEvent(Guid eventId);
 
         Task<bool> CheckPlaceForEvent(Guid eventId,int place);
+
+        Task UpdateEventForImage(Guid imageId);
+
+        Task DeleteEventForSpace(Guid spaceId);
     }
 }

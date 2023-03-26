@@ -11,7 +11,8 @@ public class AuthorizationTest
 {
     
 #pragma warning disable CS8618
-    private string _jwtTocken;
+    // ReSharper disable once IdentifierTypo
+    private string _jwtTocken="";
 #pragma warning restore CS8618
     
     
@@ -36,7 +37,7 @@ public class AuthorizationTest
     {
         
         await TestAuthorization();
-        using HttpClient client = new HttpClient();
+        using var client = new HttpClient();
         var request = new HttpRequestMessage()
             {
                 Method = HttpMethod.Get,
@@ -49,34 +50,11 @@ public class AuthorizationTest
         var response = await client.SendAsync(request);
         var result =await response.Content.ReadAsStringAsync();
         var path=Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-        using (var test = new StreamReader(path+@"\testcontent\eventsfrombd.txt"))
-        {
-            var defaultString=await test.ReadLineAsync();
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-            Assert.Equal(defaultString,result);
-        }
-
-       
-        
+        using var test = new StreamReader(path+@"\testcontent\eventsfrombd.txt");
+        var defaultString=await test.ReadLineAsync();
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        Assert.Equal(defaultString,result);
     }
 
-    /*class Eventaccept
-    {
-        public Guid eventId { get; set; }
-        public DateTime beginning { get; set; }
-        public DateTime end { get; set; }
-        public string eventName { get; set; }
-        public string description { get; set; }
-        public Guid imageId { get; set; }
-        public Guid areaId { get; set; }
-        public List<Ticketsaccept> tickets { get; set; }
-    }
-
-    class Ticketsaccept
-    {
-        public Guid ticketId { get; set; }
-
-        public Guid ownerId { get; set; }
-        public int place { get; set; }
-    }*/
+    
 }

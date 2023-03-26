@@ -20,5 +20,33 @@ services:
         - MONGO_INITDB_ROOT_PASSWORD=pass
       ports:
         - "5002:27017"
-    
-      
+    rabbitmq:
+      image: rabbitmq:3-management-alpine
+      container_name: 'rabbitmq'
+      ports:
+        - 5672:5672
+        - 15672:15672 
+      environment:
+      - RABBITMQ_DEFAULT_USER=user
+      - RABBITMQ_DEFAULT_PASS=password
+    imageapi:
+      image: imageapi
+      build: 
+        context: .
+        dockerfile: ImageAPI/Dockerfile 
+      ports:
+        - "5168:80"
+    paymentapi:
+      image: paymentapi
+      build: 
+        context: .
+        dockerfile: PaymentAPI/Dockerfile 
+      ports:
+        - "5262:80"     
+    spaceapi:
+      image: spaceapi
+      build: 
+        context: .
+        dockerfile: SpaceAPI/Dockerfile 
+      ports:
+        - "5140:80"   

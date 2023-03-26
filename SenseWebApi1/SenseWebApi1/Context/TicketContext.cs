@@ -35,7 +35,31 @@ namespace SenseWebApi1.Context
             }
             
         }
-        public async Task AddFreeTickets(Guid eventId, int countOfTickets)
+
+        public async Task<Ticket> SellTicketForUser(Guid userId, Guid ticketId)
+        {
+            var filterForSearch = Builders<Event>.Filter.ElemMatch(p => p.Tickets, t => t.TicketId == ticketId);
+            var mongoCollection = _databaseContext.GetMongoDatabase().GetCollection<Event>("Events");
+            var eventObj = await mongoCollection.Find(filterForSearch).FirstOrDefaultAsync();
+#pragma warning disable CS8604
+            var ticket = eventObj.Tickets.FirstOrDefault(p => p.TicketId==ticketId);
+            if (ticket != null)
+            {
+                
+                ticket.OwnerId = userId;
+                
+#pragma warning restore CS8604
+                await _eventContext.UpdateEvent(eventObj);
+            }
+            else
+            {
+                throw new ScException("Такой билет не найден");
+            }
+
+            return ticket;
+        }
+
+        public async Task AddTickets(Guid eventId, int countOfTickets)
         {
             
             var mongoCollection = _databaseContext.GetMongoDatabase().GetCollection<Event>("Events");

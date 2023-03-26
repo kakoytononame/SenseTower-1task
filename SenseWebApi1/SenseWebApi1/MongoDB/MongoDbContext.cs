@@ -35,8 +35,8 @@ namespace SenseWebApi1.MongoDB
                     EventId = Guid.Parse("491d776d-523a-4afa-9b36-a1c46fa126da"),
                     Beginning = DateTime.Parse("2023-03-13T17:10:17.5776731+03:00"),
                     End = DateTime.Parse("2023-03-13T20:10:17.5776731+03:00"),
-                    AreaId = Guid.Parse("40880975-cf39-4674-ba22-511a38a158fb"),
-                    ImageId = Guid.Parse("bda59f4e-c60b-411b-87e5-61a73125979b"),
+                    AreaId = Guid.Parse("1f072c8c-b770-4cae-a587-d5e7bb2777ba"),
+                    ImageId = Guid.Parse("5a448705-8ad7-4456-9847-f3b07e26edf9"),
                     IsHavePlaces = true,
                     Tickets = new List<Ticket>()
                     {
@@ -68,8 +68,8 @@ namespace SenseWebApi1.MongoDB
                     EventId = Guid.Parse("799b539a-763f-4ce7-b485-850df7ff6cc1"),
                     Beginning = DateTime.Parse("2023-03-14T17:10:17.5776731+03:00"),
                     End = DateTime.Parse("2023-03-14T20:10:17.5776731+03:00"),
-                    AreaId = Guid.Parse("ec747803-890d-4ce4-8958-64cfea4e77a7"),
-                    ImageId = Guid.Parse("ccd50edc-a02f-48a8-8ae8-70b47dd087d8"),
+                    AreaId = Guid.Parse("558b3257-bb3d-4b40-a2bf-207c77d3149c"),
+                    ImageId = Guid.Parse("08e8f2cf-7594-4e6d-9df9-77f524ad1e3e"),
                     IsHavePlaces = false,
                     Tickets = new List<Ticket>()
                     {
@@ -93,36 +93,6 @@ namespace SenseWebApi1.MongoDB
             }
 
         }
-        /*public async Task TicketIniz()
-        {
-            var mongoCollection = GetMongoDatabase().GetCollection<Ticket>("Tickets");
-            List<Ticket> tickets = new List<Ticket>()
-            {
-                new Ticket()
-                {
-                    TicketId = Guid.NewGuid(),
-                    Place = "1",
-                    OwnerId = Guid.NewGuid()
-                },
-                new Ticket()
-                {
-                    TicketId = Guid.NewGuid(),
-                    Place = "2",
-                    OwnerId = Guid.NewGuid()
-                },
-                new Ticket()
-                {
-                    TicketId = Guid.NewGuid(),
-                    EventId = Guid.Parse("491d776d-523a-4afa-9b36-a1c46fa126da"),
-                    Place = "3",
-                    OwnerId = Guid.NewGuid()
-                }
-            };
-            if (mongoCollection.CountDocuments(Builders<Ticket>.Filter.Where(p => true)) == 0)
-            {
-                await mongoCollection.InsertManyAsync(tickets);
-            }
-            
-        }*/
+        
     }
 }

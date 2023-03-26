@@ -1,31 +1,33 @@
-﻿using SenseWebApi1.Features.EventFeature;
+﻿using Polly;
+using Polly.Retry;
+using SC.Internship.Common.ScResult;
+using SenseWebApi1.Features.EventFeature;
+using SenseWebApi1.Services;
+using JsonConvert = Newtonsoft.Json.JsonConvert;
+
+
 
 namespace SenseWebApi1.Context
 {
     public class ImageContext:IImageContext
     {
-        // ReSharper disable once FieldCanBeMadeReadOnly.Local
-        private List<Image> _images = new List<Image>();
-
-        public ImageContext()
+        private RetryPolicy _retryPolicy=Policy.Handle<Exception>().Retry(2);
+        private readonly IHttpService _httpService;
+        public ImageContext(IHttpService httpService)
         {
-            _images.Add(new Image()
-            {
-                ImageId=Guid.Parse("bda59f4e-c60b-411b-87e5-61a73125979b"),
-                src="image 1"
-            });
-            _images.Add(new Image()
-            {
-                ImageId = Guid.Parse("ccd50edc-a02f-48a8-8ae8-70b47dd087d8"),
-                src = "image 2"
-            });
+            _httpService = httpService;
         }
-
-
-        public bool IsHave (Guid id)
+        public async Task<bool> IsHave (Guid id)
         {
-            var image=_images.FirstOrDefault(p => p.ImageId==id);
+           
+            var result = await _retryPolicy.Execute(()=> _httpService.GetImages(""));
+            
+            var images = JsonConvert.DeserializeObject<ScResult<List<Imagine>>>(result)!;
+#pragma warning disable CS8602
+            var image = images.Result.Find(p=>p.Id==id)!;
+            // ReSharper disable once ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
             return image != null;
+           
         }
     }
 }

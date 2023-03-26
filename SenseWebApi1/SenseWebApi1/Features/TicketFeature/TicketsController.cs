@@ -1,16 +1,19 @@
 ﻿using AutoMapper;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SC.Internship.Common.ScResult;
 using SenseWebApi1.Features.TicketFeature.AddFreeTickets;
 using SenseWebApi1.Features.TicketFeature.CheckTicketForUser;
 using SenseWebApi1.Features.TicketFeature.GetTicket;
 using SenseWebApi1.Features.TicketFeature.GiveTicketForUser;
+using SenseWebApi1.Features.TicketFeature.SellTicketForUser;
 
 namespace SenseWebApi1.Features.TicketFeature
 {
     [ApiController]
     [Route("api")]
+    [Authorize]
     public class TicketsController : ControllerBase
     {
         // ReSharper disable once NotAccessedField.Local
@@ -22,7 +25,7 @@ namespace SenseWebApi1.Features.TicketFeature
             _mediator = mediator;
         }
         /// <summary>
-        /// Добавить бесплатные билеты
+        /// Добавить  билеты
         /// </summary>
         /// <returns></returns>
         /// <remarks>
@@ -40,10 +43,10 @@ namespace SenseWebApi1.Features.TicketFeature
         /// <response code="401">Возвращает unauthorized </response>
         /// <response code="500">Ошибка сервера </response>
         [HttpPost("tickets")]
-        public async Task<IActionResult> AddFreeTickets(Guid eventId, int countoftickets)
+        public async Task<IActionResult> AddTickets(Guid eventId, int countoftickets)
         {
 
-            var result = await _mediator.Send(new AddFreeTicketsCommand() { EventId = eventId, Countoftickets = countoftickets });
+            var result = await _mediator.Send(new AddTicketsCommand() { EventId = eventId, Countoftickets = countoftickets });
             return Ok(new ScResult<bool>()
             {
                 Result = result
@@ -69,10 +72,40 @@ namespace SenseWebApi1.Features.TicketFeature
         /// <response code="500">Ошибка сервера </response>
         [HttpPut("tickets/{ticketId}")]
 
-        public async Task<IActionResult> GiveTicketForUser( Guid ticketId, Guid ownerId,int place)
+        public async Task<IActionResult> GiveTicketForUser( Guid ticketId, Guid ownerId)
         {
-            var result = await _mediator.Send(new GiveTicketForUserCommand() { TicketId = ticketId, OwnerId = ownerId, Place = place});
+            
+            var result = await _mediator.Send(new GiveTicketForUserCommand() { TicketId = ticketId, OwnerId = ownerId});
             return Ok(new ScResult<Guid>()
+            {
+                Result = result
+            });
+        }
+        /// <summary>
+        /// Продать пользователю билет
+        /// </summary>
+        /// <returns></returns>
+        /// <remarks>
+        /// Пример входных данных:
+        ///
+        ///     POST /tickets/{ticketId}
+        ///     {
+        ///         "ticketId": "8299f9f5-6176-4595-9004-bd01beafeb25",
+        ///         "ownerId": "f4d26a57-0725-4796-82bf-2be457bbfcd4",
+        ///         "place": "4"
+        ///     }
+        ///
+        /// </remarks>
+        /// <response code="200">Возвращает bool добавленны билеты </response>
+        /// <response code="401">Возвращает unauthorized </response>
+        /// <response code="500">Ошибка сервера </response>
+        [HttpPut("tickets/sell/{ticketId}")]
+
+        public async Task<IActionResult> SellTicketForUser( Guid ticketId, Guid ownerId)
+        {
+            
+            var result = await _mediator.Send(new SellTicketForUserCommand() { TicketId = ticketId, OwnerId = ownerId});
+            return Ok(new ScResult<Ticket>()
             {
                 Result = result
             });

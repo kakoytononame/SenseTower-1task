@@ -1,3 +1,4 @@
+
 using MediatR;
 using SenseWebApi1.Context;
 using System.Reflection;
@@ -5,16 +6,26 @@ using FluentValidation;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using ImageAPI;
 using Microsoft.AspNetCore.CookiePolicy;
+using Microsoft.Extensions.Options;
 using SenseWebApi1.MongoDB;
 using SenseWebApi1.Common;
 using SenseWebApi1.Common.Middlewares;
 using SenseWebApi1.Features.EventFeature;
+using SenseWebApi1;
+using SenseWebApi1.Config;
+using SenseWebApi1.RMQ;
+using SenseWebApi1.Services;
+
+
+RMQINIZ.CreateListener();
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 #pragma warning disable CS0618 
+builder.Services.AddHostedService<RMQListener>();
 
 builder.Services.AddControllers();
 
@@ -22,11 +33,38 @@ builder.Services.AddMvc().AddControllersAsServices();
 
 builder.Services.AddEndpointsApiExplorer();
 
+builder.Services.Configure<ApiConfig>(options =>
+    {
+#pragma warning disable CS8601
+        options.AccessToken= builder.Configuration.GetSection("MongoConnection:ConnectionString").Value;
+
+        options.BaseUrl=builder.Configuration.GetSection("MongoConnection:Database").Value;
+#pragma warning restore CS8601
+    }
+);
+
+
+
+
+builder.Services.Configure<RMQOptions>(options =>
+    {
+        options.Port = Convert.ToInt32(builder.Configuration.GetSection("RabbitMq:Port").Value);
+        options.HostName = builder.Configuration.GetSection("RabbitMq:Host").Value!;
+        options.UserName=builder.Configuration.GetSection("RabbitMq:UserName").Value!;
+        options.Password=builder.Configuration.GetSection("RabbitMq:Password").Value!;
+        options.VirtualHost=builder.Configuration.GetSection("RabbitMq:VirtualHost").Value!;
+        
+    }
+    
+);
+
 builder.Services.AddSwaggerGen(options =>
 {
     var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
     options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
 });
+
+
 
 builder.Services.Configure<Settings>(options =>
     {
@@ -48,19 +86,31 @@ builder.Services.AddCors(options =>
                       });
 });
 
+
+
+
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(Program).Assembly));
 
-builder.Services.AddScoped<IEventContext,EventContext>();
+builder.Services.AddSingleton<IApiConfig>(sp =>
+    sp.GetRequiredService<IOptions<ApiConfig>>().Value);
+
+builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
+builder.Services.AddSingleton<IHttpService, HttpService>();
+
+builder.Services.AddSingleton<IRmqSender, RmqSender>();
+
+builder.Services.AddSingleton<IEventContext,EventContext>();
 
 builder.Services.AddSingleton<IImageContext, ImageContext>();
 
 builder.Services.AddSingleton<IAreaContext, AreaContext>();
 
-builder.Services.AddScoped<ITicketContext,TicketContext>();
+builder.Services.AddSingleton<ITicketContext,TicketContext>();
 
-builder.Services.AddScoped<IMongoDbContext, MongoDbContext>();
+builder.Services.AddSingleton<IMongoDbContext, MongoDbContext>();
 
-builder.Services.AddAutoMapper(typeof (EventProfile),typeof (ImageProfile),typeof (AreaProfile));
+builder.Services.AddAutoMapper(typeof (EventProfile));
 
 AssemblyScanner.FindValidatorsInAssembly(typeof(Program).Assembly)
   .ForEach(item => builder.Services.AddScoped(item.InterfaceType, item.ValidatorType));
@@ -113,7 +163,6 @@ app.UseCookiePolicy(new CookiePolicyOptions
     HttpOnly = HttpOnlyPolicy.Always,
     Secure = CookieSecurePolicy.None,
 });
-
 
 app.UseAuthentication();
 

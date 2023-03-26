@@ -33,13 +33,14 @@ namespace SenseWebApi1.Features.EventFeature
         /// <summary>
         /// Id картинки
         /// </summary>
-        public Guid ImageId { get; set; }
+        public Guid? ImageId { get; set; }
 
         public Guid AreaId { get; set; }
 
         // ReSharper disable once CollectionNeverUpdated.Global
         public List<Ticket>? Tickets { get; set; }
-
+        
+        public decimal Cost { get; set; } 
         public bool IsHavePlaces { get; set; }
     }
 }

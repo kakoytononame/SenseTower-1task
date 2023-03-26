@@ -9,7 +9,7 @@ namespace IdentityServer0.Controllers
     public class AccountController:Controller
     {
         // тестовые данные вместо использования базы данных
-        private List<Person> people = new List<Person>
+        private readonly List<Person> _people = new List<Person>
         {
             new Person {Login="admin", Password="12345" },
             new Person { Login="user", Password="55555"}
@@ -21,6 +21,7 @@ namespace IdentityServer0.Controllers
 
 
             var identity = GetIdentity(loginDto.Login, loginDto.Password);
+            // ReSharper disable once ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
             if (identity == null)
             {
                 return Unauthorized();
@@ -44,7 +45,10 @@ namespace IdentityServer0.Controllers
 
         private ClaimsIdentity GetIdentity(string username, string password)
         {
-            Person person = people.FirstOrDefault(x => x.Login == username && x.Password == password);
+#pragma warning disable CS8600
+            var person = _people.FirstOrDefault(x => x.Login == username && x.Password == password);
+#pragma warning restore CS8600
+            // ReSharper disable once InvertIf
             if (person != null)
             {
                 var claims = new List<Claim>
@@ -58,12 +62,19 @@ namespace IdentityServer0.Controllers
             }
 
             // если пользователя не найдено
+#pragma warning disable CS8603
             return null;
+#pragma warning restore CS8603
         }
         public class LoginDto
         {
+#pragma warning disable CS8618
+            // ReSharper disable once UnusedAutoPropertyAccessor.Global
             public string Login { get; set; }
+
+            // ReSharper disable once UnusedAutoPropertyAccessor.Global
             public string Password { get; set; }
+#pragma warning restore CS8618
         }
     }
 }

@@ -55,7 +55,6 @@ namespace SenseWebApi1.Common.Middlewares
         private async Task HandleExceptionAsync(HttpContext context, Dictionary<string, List<string>> errors)
         {
             context.Response.ContentType = "application/json";
-            var dictionary=errors.ToDictionary(x=>x,y=>y);
             context.Response.StatusCode = 400;
             var jsonError = JsonSerializer.Serialize(new ScResult() { Error = new ScError() { ModelState = errors } });
             _logger.LogError(jsonError);

@@ -14,7 +14,7 @@ namespace SenseWebApi1.Features.TicketFeature.GiveTicketForUser
         public async Task<Guid> Handle(GiveTicketForUserCommand request, CancellationToken cancellationToken)
         {
             
-             await _ticketContext.GiveTicketForUser(request.OwnerId, request.TicketId,request.Place);
+             await _ticketContext.GiveTicketForUser(request.OwnerId, request.TicketId);
              return request.TicketId;
            
         }

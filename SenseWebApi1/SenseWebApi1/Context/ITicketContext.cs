@@ -5,14 +5,16 @@ namespace SenseWebApi1.Context
 {
     public interface ITicketContext
     {
-        Task AddFreeTickets(Guid eventId,int countOfTickets);
+        Task AddTickets(Guid eventId,int countOfTickets);
         Task<bool> UserHaveTicket(Guid userId, Guid ticketId);
-        Task GiveTicketForUser(Guid userId, Guid ticketId,int? place);
+        Task GiveTicketForUser(Guid userId, Guid ticketId);
 
         Task<bool> CheckTicketForUser(Guid userId,Guid eventId);
 
         Task<bool> TicketHave(Guid ticketId);
 
         Task<List<Ticket>> GetTickets(Guid eventId);
+
+        Task<Ticket> SellTicketForUser(Guid userId, Guid ticketId);
     }
 }

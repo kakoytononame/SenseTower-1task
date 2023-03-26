@@ -19,6 +19,7 @@ namespace SenseWebApi1.Features.EventFeature.CreateEvent
         
         // ReSharper disable once UnassignedGetOnlyAutoProperty
         // ReSharper disable once UnusedAutoPropertyAccessor.Global
+        public decimal Cost { get; set; }
         public bool  IsHavePlaces { get; set; }
 
     }

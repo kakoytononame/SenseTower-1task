@@ -10,6 +10,6 @@
 8.По адресу http://localhost:5000/swagger/index.html вы можете открыть swagger для действий с контроллером identityservice<br/>
 9.По адресу http://localhost:5002/swagger/index.html происходит подключение к mongodb<br/>
 Пример удаления картинки через rmq <br/>
-<image>![image](https://user-images.githubusercontent.com/95782287/227795745-f5f6a154-e300-412d-b594-3c8446275cce.png)<image/>
+<image>![image](https://user-images.githubusercontent.com/95782287/227795887-49ee6df6-0451-4257-beef-40724b8e4463.png)<image/>
 Прмер удаления пространства через rmq  <br/>
-<image>![image](https://user-images.githubusercontent.com/95782287/227795745-f5f6a154-e300-412d-b594-3c8446275cce.png)<image/>
+<image>![image](https://user-images.githubusercontent.com/95782287/227795899-abdcc2a4-c8f1-4d3a-b1e1-419fcc736c52.png)<image/>

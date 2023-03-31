@@ -3,112 +3,41 @@ using SenseWebApi1.Features.EventFeature;
 using SenseWebApi1.MongoDB;
 
 
-namespace SenseWebApi1.Context
+namespace SenseWebApi1.Context;
+
+public class EventContext : IEventContext
 {
-    public class EventContext : IEventContext
-    {
         
-        private readonly IMongoDbContext _databaseContext;
+    private readonly IMongoDbContext _databaseContext;
 
-        public EventContext(IMongoDbContext databaseContext)
-        {
-            _databaseContext = databaseContext;
+    public EventContext(IMongoDbContext databaseContext)
+    {
+        _databaseContext = databaseContext;
 
-            databaseContext.EventIniz();
+        databaseContext.EventIniz();
             
-        }
-        public async Task<List<Event>> GetEvents()
+    }
+        
+
+    public async Task UpdateEventForImage(Guid imageId)
+    {
+        var filterForSearch = Builders<Event>.Filter.Where(p => p.ImageId == imageId);
+        var mongoCollection = _databaseContext.GetMongoDatabase().GetCollection<Event>("Events");
+        var events = await mongoCollection.Find(filterForSearch).ToListAsync();
+        foreach (var eventObj in events)
         {
-            var mongoCollection = _databaseContext.GetMongoDatabase().GetCollection<Event>("Events");
-            var eventsCollection = await mongoCollection.Find(_ => true).ToListAsync();
-            return eventsCollection;
+            eventObj.ImageId = null;
+        }
+
+        var builder = Builders<Event>.Update;
+        await mongoCollection.UpdateManyAsync(x => x.ImageId ==imageId, builder.Set(p=>p.ImageId,null));
             
-        }
-        public async Task AddEvent(Event @event)
-        {           
-            var mongoCollection = _databaseContext.GetMongoDatabase().GetCollection<Event>("Events");
-            await mongoCollection.InsertOneAsync(@event);
-        }
+    }
 
-        public async Task RemoveEvent(Guid id)
-        {
-            var mongoCollection = _databaseContext.GetMongoDatabase().GetCollection<Event>("Events");
-            await mongoCollection.DeleteOneAsync(p => p.EventId == id);
-        }
-
-        public async Task UpdateEvent(Event @event)
-        {
-            var mongoCollection = _databaseContext.GetMongoDatabase().GetCollection<Event>("Events");
-            var filter = Builders<Event>.Filter
-                .Where(p=>p.EventId==@event.EventId);
-            if (@event.Tickets != null)
-            {
-                var updatewittick = Builders<Event>.Update
-                    
-                    .Set(p => p.Beginning, @event.Beginning)
-                    .Set(p => p.End, @event.End)
-                    .Set(p => p.AreaId, @event.AreaId)
-                    .Set(p => p.Description, @event.Description)
-                    .Set(p => p.ImageId, @event.ImageId)
-                    .Set(p => p.Tickets, @event.Tickets)
-                    .Set(p => p.IsHavePlaces, @event.IsHavePlaces)
-                    .Set(p=>p.Cost,@event.Cost);
-                await mongoCollection.UpdateOneAsync(filter, updatewittick);
-            }
-            else
-            {
-                var update = Builders<Event>.Update
-                    
-                    .Set(p => p.Beginning, @event.Beginning)
-                    .Set(p => p.End, @event.End)
-                    .Set(p => p.AreaId, @event.AreaId)
-                    .Set(p => p.Description, @event.Description)
-                    .Set(p => p.ImageId, @event.ImageId)
-                    .Set(p => p.IsHavePlaces, @event.IsHavePlaces)
-                    .Set(p=>p.Cost,@event.Cost);
-                await mongoCollection.UpdateOneAsync(filter, update);
-            }
-            
-           
-        }
-
-        public async Task<bool> HaveEvent(Guid eventId)
-        {
-            var mongoCollection = _databaseContext.GetMongoDatabase().GetCollection<Event>("Events");
-            var eventObj = await mongoCollection.Find(p => p.EventId == eventId).FirstOrDefaultAsync();
-            return eventObj != null;
-        }
-
-        public async Task<bool> CheckPlaceForEvent(Guid eventId,int place)
-        {
-            var mongoCollection = _databaseContext.GetMongoDatabase().GetCollection<Event>("Events");
-            var eventObj = await mongoCollection.Find(p => p.EventId == eventId).FirstOrDefaultAsync();
-#pragma warning disable CS8604
-            var placeObj = eventObj.Tickets.FirstOrDefault(p=>p.Place==place);
-#pragma warning restore CS8604
-            return placeObj != null;
-        }
-
-        public async Task UpdateEventForImage(Guid imageId)
-        {
-            var filterForSearch = Builders<Event>.Filter.Where(p => p.ImageId == imageId);
-            var mongoCollection = _databaseContext.GetMongoDatabase().GetCollection<Event>("Events");
-            var events = await mongoCollection.Find(filterForSearch).ToListAsync();
-            foreach (var eventObj in events)
-            {
-                eventObj.ImageId = null;
-            }
-
-            var builder = Builders<Event>.Update;
-            await mongoCollection.UpdateManyAsync(x => x.ImageId ==imageId, builder.Set(p=>p.ImageId,null));
-            
-        }
-
-        public async Task DeleteEventForSpace(Guid spaceId)
-        {
-            var filterForSearch = Builders<Event>.Filter.Where(p => p.AreaId == spaceId);
-            var mongoCollection = _databaseContext.GetMongoDatabase().GetCollection<Event>("Events");
-            await mongoCollection.DeleteManyAsync(filterForSearch);
-        }
+    public async Task DeleteEventForSpace(Guid spaceId)
+    {
+        var filterForSearch = Builders<Event>.Filter.Where(p => p.AreaId == spaceId);
+        var mongoCollection = _databaseContext.GetMongoDatabase().GetCollection<Event>("Events");
+        await mongoCollection.DeleteManyAsync(filterForSearch);
     }
 }

@@ -22,5 +22,6 @@ public class ScResult<T> : ScResult
         Result = result;
     }
 
+    // ReSharper disable once PropertyCanBeMadeInitOnly.Global
     public T? Result { get; set; }
 }

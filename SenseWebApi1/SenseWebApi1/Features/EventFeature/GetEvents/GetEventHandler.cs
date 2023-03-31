@@ -1,25 +1,28 @@
 ﻿using AutoMapper;
 using MediatR;
-using SenseWebApi1.Context;
+using MongoDB.Driver;
+using SenseWebApi1.MongoDB;
 
-namespace SenseWebApi1.Features.EventFeature.GetEvents
+namespace SenseWebApi1.Features.EventFeature.GetEvents;
+
+// ReSharper disable once UnusedType.Global
+public class GetEventCommandHandler : IRequestHandler<GetEventCommand, IEnumerable<EventDto>>
 {
-    public class GetEventCommandHandler : IRequestHandler<GetEventCommand, IEnumerable<EventDto>>
+
+    
+    private readonly IMapper _mapper;
+    private readonly IMongoDbContext _databaseContext;
+    public GetEventCommandHandler(IMapper mapper,IMongoDbContext databaseContext)
     {
-
-        private readonly IEventContext _eventContext;
-        private readonly IMapper _mapper;
-        public GetEventCommandHandler(IMapper mapper, IEventContext eventContext)
-        {
-            _mapper = mapper;
-            _eventContext = eventContext;
-        }
-        public async Task<IEnumerable<EventDto>> Handle(GetEventCommand request, CancellationToken cancellationToken)
-        {
-
-            var mappingObject = await _eventContext.GetEvents();
-            var result = mappingObject.Select(entity => _mapper.Map<Event, EventDto>(entity)).ToList();
-            return result;
-        }
+        _mapper = mapper;
+        
+        _databaseContext = databaseContext;
+    }
+    public async Task<IEnumerable<EventDto>> Handle(GetEventCommand request, CancellationToken cancellationToken)
+    {
+        var mongoCollection = _databaseContext.GetMongoDatabase().GetCollection<Event>("Events");
+        var eventsCollection = await mongoCollection.Find(_ => true).ToListAsync(cancellationToken: cancellationToken);
+        var result = eventsCollection.Select(entity => _mapper.Map<Event, EventDto>(entity)).ToList();
+        return result;
     }
 }

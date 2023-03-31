@@ -1,18 +1,27 @@
 ﻿using MediatR;
-using SenseWebApi1.Context;
+using MongoDB.Driver;
+using SenseWebApi1.MongoDB;
 
-namespace SenseWebApi1.Features.EventFeature.CheckPlaceForEvent
+namespace SenseWebApi1.Features.EventFeature.CheckPlaceForEvent;
+
+// ReSharper disable once UnusedType.Global
+public class CheckPlaceForEventHandler : IRequestHandler<CheckPlaceForEventCommand, bool>
 {
-    public class CheckPlaceForEventHandler : IRequestHandler<CheckPlaceForEventCommand, bool>
+        
+    private readonly IMongoDbContext _databaseContext;
+    public CheckPlaceForEventHandler(IMongoDbContext databaseContext) 
     {
-        private readonly IEventContext _eventContext;
-        public CheckPlaceForEventHandler(IEventContext eventContext) 
-        {
-            _eventContext = eventContext;
-        }
-        public Task<bool> Handle(CheckPlaceForEventCommand request, CancellationToken cancellationToken)
-        {
-            return _eventContext.CheckPlaceForEvent(request.eventId, request.place);
-        }
+            
+        _databaseContext = databaseContext;
+    }
+    public async Task<bool> Handle(CheckPlaceForEventCommand request, CancellationToken cancellationToken)
+    {
+        var mongoCollection = _databaseContext.GetMongoDatabase().GetCollection<Event>("Events");
+        var eventObj = await mongoCollection.Find(p => p.EventId == request.eventId).FirstOrDefaultAsync(cancellationToken: cancellationToken);
+#pragma warning disable CS8604
+        var placeObj = eventObj.Tickets.FirstOrDefault(p=>p.Place==request.place);
+#pragma warning restore CS8604
+        return placeObj != null;
+            
     }
 }

@@ -25,7 +25,7 @@ public class AuthorizationTest
             password = "12345"
         };
         var content = new StringContent(JsonSerializer.Serialize(value), Encoding.UTF8, "application/json");
-        using HttpClient client = new HttpClient();
+        using var client = new HttpClient();
         var response =await client.PostAsync("http://localhost:5286/stub/authstub",content);
         _jwtTocken = await response.Content.ReadAsStringAsync();
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
@@ -38,12 +38,10 @@ public class AuthorizationTest
         
         await TestAuthorization();
         using var client = new HttpClient();
-        var request = new HttpRequestMessage()
+        var request = new HttpRequestMessage
             {
                 Method = HttpMethod.Get,
-                RequestUri = new Uri("http://localhost:5286/api/events"),
-                
-                
+                RequestUri = new Uri("http://localhost:5286/api/events")
             };
        
         request.Headers.Add("Authorization","Bearer "+_jwtTocken);

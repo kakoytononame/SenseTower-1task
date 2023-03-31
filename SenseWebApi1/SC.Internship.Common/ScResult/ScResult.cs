@@ -11,6 +11,7 @@ public class ScResult
     /// <summary>
     /// Информация об ошибке для случая если возникла ошибка при вызове метода
     /// </summary>
+    // ReSharper disable once UnusedAutoPropertyAccessor.Global
     public ScError? Error { get; set; }
 
     public ScResult()

@@ -9,12 +9,12 @@ public class PaymentTransactionContext:IPaymentTransaction
     // ReSharper disable once FieldCanBeMadeReadOnly.Global
     // ReSharper disable once CollectionNeverQueried.Global
     // ReSharper disable once FieldCanBeMadeReadOnly.Local
-    private  List<PaymentTransaction> _transactions = new List<PaymentTransaction>();
+    private  List<PaymentTransaction> _transactions = new();
     public async Task<Guid> CreateTransaction(Guid ownerId)
     {
         try
         {
-            PaymentTransaction transaction = new PaymentTransaction()
+            var transaction = new PaymentTransaction
             {
                 Id = Guid.NewGuid(),
                 DateCreation = DateTime.Now,
@@ -22,7 +22,7 @@ public class PaymentTransactionContext:IPaymentTransaction
                 DateConfirmation = null,
                 Description = null,
                 OwnerId = ownerId,
-                State = Enums.Hold
+                State = PaymentEnum.Hold
             };
             await Task.Run(()=>_transactions.Add(transaction));
             
@@ -44,7 +44,7 @@ public class PaymentTransactionContext:IPaymentTransaction
             if (transaction != null)
             {
                 transaction.DateConfirmation=DateTime.Now;
-                transaction.State = Enums.Confirmed;
+                transaction.State = PaymentEnum.Confirmed;
             }
             else
             {
@@ -67,7 +67,7 @@ public class PaymentTransactionContext:IPaymentTransaction
             if (transaction != null)
             {
                 transaction.DateCancellation=DateTime.Now;
-                transaction.State = Enums.Canceled;
+                transaction.State = PaymentEnum.Canceled;
             }
             else
             {

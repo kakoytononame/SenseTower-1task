@@ -1,19 +1,21 @@
 ﻿using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Bson;
+// ReSharper disable PropertyCanBeMadeInitOnly.Global
 
-namespace SenseWebApi1.Features.TicketFeature
+namespace SenseWebApi1.Features.TicketFeature;
+
+public class Ticket
 {
-    public class Ticket
-    {
-        [BsonId]
-        [BsonRepresentation(BsonType.ObjectId)]
-        public string? Id { get; set; }
-        public Guid TicketId { get; set; }
+    [BsonId]
+    [BsonRepresentation(BsonType.ObjectId)]
+    // ReSharper disable once UnusedAutoPropertyAccessor.Global
+    public string? Id { get; set; }
+        
+    public Guid TicketId { get; set; }
 
-        public Guid? OwnerId { get; set; }
+    public Guid? OwnerId { get; set; }
 
-        public int? Place { get; set; }
+    public int? Place { get; set; }
 
         
-    }
 }

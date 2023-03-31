@@ -1,11 +1,10 @@
 ﻿using MongoDB.Driver;
 
-namespace SenseWebApi1.MongoDB
+namespace SenseWebApi1.MongoDB;
+
+public interface IMongoDbContext
 {
-    public interface IMongoDbContext
-    {
-        IMongoDatabase GetMongoDatabase();
-        Task EventIniz();
+    IMongoDatabase GetMongoDatabase();
+    Task EventIniz();
         
-    }
 }

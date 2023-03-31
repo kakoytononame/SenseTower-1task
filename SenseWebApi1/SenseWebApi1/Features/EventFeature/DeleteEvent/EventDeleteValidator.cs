@@ -1,13 +1,13 @@
 ﻿using FluentValidation;
 
-namespace SenseWebApi1.Features.EventFeature.DeleteEvent
+namespace SenseWebApi1.Features.EventFeature.DeleteEvent;
+
+// ReSharper disable once UnusedType.Global
+public class EventDeleteCommandValidator : AbstractValidator<EventDeleteCommand>
 {
-    public class EventDeleteCommandValidator : AbstractValidator<EventDeleteCommand>
+    public EventDeleteCommandValidator()
     {
-        public EventDeleteCommandValidator()
-        {
             
-            RuleFor(p => p.EventId).NotEmpty().WithMessage("Пустое id события").WithErrorCode("400");
-        }
+        RuleFor(p => p.EventId).NotEmpty().WithMessage("Пустое id события").WithErrorCode("400");
     }
 }

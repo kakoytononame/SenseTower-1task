@@ -1,9 +1,8 @@
 ﻿using System.Text.Json;
 using SC.Internship.Common.Exceptions;
 using SC.Internship.Common.ScResult;
-using SenseWebApi1.domain.Exceptions;
 
-namespace SenseWebApi1.Common.Middlewares;
+namespace SpaceAPI;
 
 public class GlobalErrorHandler
 {
@@ -25,11 +24,7 @@ public class GlobalErrorHandler
         {
             await HandleExceptionAsync(httpContext, ex);
         }
-        catch(ExceptionsAdapter ex)
-        {
-            await HandleExceptionAsync(httpContext, ex.Exceptions);
-                
-        }
+            
         catch(ScException ex)
         {
             await HandleExceptionAsync(httpContext, ex);
@@ -44,7 +39,7 @@ public class GlobalErrorHandler
     {
         context.Response.ContentType = "application/json";
         var response = context.Response;
-        context.Response.StatusCode = 400;
+        context.Response.StatusCode = 404;
         // ReSharper disable once SuggestVarOrType_BuiltInTypes
         string result = exception.Message;
         _logger.LogError(exception.Message);
@@ -52,12 +47,5 @@ public class GlobalErrorHandler
         await response.WriteAsync(jsonError);
             
     }
-    private async Task HandleExceptionAsync(HttpContext context, Dictionary<string, List<string>> errors)
-    {
-        context.Response.ContentType = "application/json";
-        context.Response.StatusCode = 400;
-        var jsonError = JsonSerializer.Serialize(new ScResult { Error = new ScError { ModelState = errors } });
-        _logger.LogError(jsonError);
-        await context.Response.WriteAsync(jsonError);
-    }
+        
 }

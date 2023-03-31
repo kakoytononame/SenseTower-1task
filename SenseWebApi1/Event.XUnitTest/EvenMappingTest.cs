@@ -16,7 +16,7 @@ public class EvenMappingToEventDtoTest
         });
         
         var mapper = config.CreateMapper();
-        var eventObj = new SenseWebApi1.Features.EventFeature.Event()
+        var eventObj = new SenseWebApi1.Features.EventFeature.Event
         {
             Id = "6416f87ed4349ac4a67bfe80",
             EventName = "Event-1",

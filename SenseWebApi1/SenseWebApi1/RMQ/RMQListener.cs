@@ -1,5 +1,4 @@
 ﻿using System.Text;
-using ImageAPI;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using RabbitMQ.Client;
@@ -14,10 +13,10 @@ public class RMQListener:BackgroundService
 {
     private readonly IModel _channel;
     // ReSharper disable once PrivateFieldCanBeConvertedToLocalVariable
-    private readonly IOptions<RMQOptions> _options;
+    private readonly IOptions<RmqOptions> _options;
     private readonly IEventContext _eventContext;
     
-    public RMQListener(IOptions<RMQOptions> options,IEventContext eventContext)
+    public RMQListener(IOptions<RmqOptions> options,IEventContext eventContext)
     {
         _options = options;
         _eventContext = eventContext;
@@ -56,7 +55,7 @@ public class RMQListener:BackgroundService
             }
             
         };
-        _channel.BasicConsume(queue: "events", autoAck: true, consumer: consumer);
+        _channel.BasicConsume(queue: "deletedevents", autoAck: true, consumer: consumer);
         return Task.CompletedTask;
     }
     

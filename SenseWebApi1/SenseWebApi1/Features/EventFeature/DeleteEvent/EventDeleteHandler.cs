@@ -1,23 +1,34 @@
 ﻿using MediatR;
-using SenseWebApi1.Context;
+using MongoDB.Driver;
+using SenseWebApi1.MongoDB;
 using SenseWebApi1.RMQ;
 
-namespace SenseWebApi1.Features.EventFeature.DeleteEvent
+namespace SenseWebApi1.Features.EventFeature.DeleteEvent;
+
+// ReSharper disable once UnusedType.Global
+public class EventDeleteCommandHandler : IRequestHandler<EventDeleteCommand, Guid>
 {
-    public class EventDeleteCommandHandler : IRequestHandler<EventDeleteCommand, Guid>
+        
+    private readonly IRmqSender _rmqSender;
+    private readonly IMongoDbContext _databaseContext;
+    public EventDeleteCommandHandler(IRmqSender rmqSender,IMongoDbContext databaseContext)
     {
-        private readonly IEventContext _eventContext;
-        private readonly IRmqSender _rmqSender;
-        public EventDeleteCommandHandler(IEventContext eventContext,IRmqSender rmqSender)
+            
+        _rmqSender = rmqSender;
+        _databaseContext = databaseContext;
+    }
+    public async Task<Guid> Handle(EventDeleteCommand request, CancellationToken cancellationToken)
+    {
+        var mongoCollection = _databaseContext.GetMongoDatabase().GetCollection<Event>("Events");
+        var filter = Builders<Event>.Filter
+            .Where(p=>p.EventId==request.EventId);
+        var eventObj =  mongoCollection.Find(filter).FirstOrDefault();
+        if (eventObj == null)
         {
-            _eventContext = eventContext;
-            _rmqSender = rmqSender;
+            throw new Exception("Такого события нет");
         }
-        public async Task<Guid> Handle(EventDeleteCommand request, CancellationToken cancellationToken)
-        {
-            await _eventContext.RemoveEvent(request.EventId);
-            await _rmqSender.SendDeleteEvent(request.EventId);
-            return request.EventId;
-        }
+        await mongoCollection.DeleteOneAsync(Builders<Event>.Filter.Where(p=>p.EventId==request.EventId), cancellationToken);
+        await _rmqSender.SendDeleteEvent(request.EventId);
+        return request.EventId;
     }
 }

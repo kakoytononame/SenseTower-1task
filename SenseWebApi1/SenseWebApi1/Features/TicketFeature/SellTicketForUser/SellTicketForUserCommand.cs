@@ -1,4 +1,5 @@
 ﻿using MediatR;
+// ReSharper disable PropertyCanBeMadeInitOnly.Global
 
 namespace SenseWebApi1.Features.TicketFeature.SellTicketForUser;
 

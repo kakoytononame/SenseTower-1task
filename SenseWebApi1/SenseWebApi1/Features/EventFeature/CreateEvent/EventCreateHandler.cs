@@ -1,31 +1,43 @@
 ﻿using MediatR;
-using SenseWebApi1.Context;
+using SC.Internship.Common.Exceptions;
+using SenseWebApi1.MongoDB;
+using SenseWebApi1.Services;
 
-namespace SenseWebApi1.Features.EventFeature.CreateEvent
+namespace SenseWebApi1.Features.EventFeature.CreateEvent;
+
+// ReSharper disable once UnusedType.Global
+public class EventCreateCommandHandler : IRequestHandler<EventCreateCommand, Guid>
 {
-    public class EventCreateCommandHandler : IRequestHandler<EventCreateCommand, Guid>
+    private readonly IHttpService _httpService;
+    private readonly IMongoDbContext _databaseContext;
+
+    public EventCreateCommandHandler(IMongoDbContext databaseContext,IHttpService httpService)
     {
-        private readonly IEventContext _eventContext;
+           
+        _databaseContext = databaseContext;
+        _httpService = httpService;
 
-        public EventCreateCommandHandler(IEventContext eventContext)
+    }
+    public async Task<Guid> Handle(EventCreateCommand command, CancellationToken cancellationToken)
+    {
+        var @event = new Event
         {
-            _eventContext = eventContext;
+            EventId = Guid.NewGuid(),
+            AreaId = command.AreaId,
+            ImageId = command.ImageId,
+            End = command.End,
+            Beginning = command.Beginning,
+            Description = command.Description,
+            EventName = command.EventName,
+            IsHavePlaces = command.IsHavePlaces,
+            Cost = command.Cost
+        };
+        // ReSharper disable once ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
+        if (_httpService.GetImages(command.ImageId).Result == null) throw new ScException("Изображение не найдено");
+        if (_httpService.GetSpaces(command.AreaId).Result == null) throw new ScException("Пространство не найдено");
+        var mongoCollection = _databaseContext.GetMongoDatabase().GetCollection<Event>("Events");
+        await mongoCollection.InsertOneAsync(@event, cancellationToken: cancellationToken);
+        return @event.EventId;
 
-        }
-        public async Task<Guid> Handle(EventCreateCommand command, CancellationToken cancellationToken)
-        {
-            Event @event = new Event();
-            @event.EventId = Guid.NewGuid();
-            @event.AreaId = command.AreaId;
-            @event.ImageId = command.ImageId;
-            @event.End = command.End;
-            @event.Beginning = command.Beginning;
-            @event.Description = command.Description;
-            @event.EventName = command.EventName;
-            @event.IsHavePlaces = command.IsHavePlaces;
-            @event.Cost = command.Cost;
-            await _eventContext.AddEvent(@event);
-            return @event.EventId;
-        }
     }
 }

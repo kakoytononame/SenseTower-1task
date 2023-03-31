@@ -1,15 +1,14 @@
-﻿using Amazon.Runtime.Internal;
-using MediatR;
+﻿using MediatR;
+// ReSharper disable PropertyCanBeMadeInitOnly.Global
 
-namespace SenseWebApi1.Features.EventFeature.CheckPlaceForEvent
+namespace SenseWebApi1.Features.EventFeature.CheckPlaceForEvent;
+
+public class CheckPlaceForEventCommand: IRequest<bool>
 {
-    public class CheckPlaceForEventCommand: IRequest<bool>
-    {
-        // ReSharper disable once InconsistentNaming
-        public Guid eventId { set; get; }
+    // ReSharper disable once InconsistentNaming
+    public Guid eventId { set; get; }
 
-        // ReSharper disable once InconsistentNaming
-        public int place {  set; get; }
+    // ReSharper disable once InconsistentNaming
+    public int place {  set; get; }
 
-    }
 }

@@ -6,15 +6,12 @@ using FluentValidation;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
-using ImageAPI;
 using Microsoft.AspNetCore.CookiePolicy;
-using Microsoft.Extensions.Options;
 using SenseWebApi1.MongoDB;
 using SenseWebApi1.Common;
 using SenseWebApi1.Common.Middlewares;
 using SenseWebApi1.Features.EventFeature;
 using SenseWebApi1;
-using SenseWebApi1.Config;
 using SenseWebApi1.RMQ;
 using SenseWebApi1.Services;
 
@@ -33,20 +30,12 @@ builder.Services.AddMvc().AddControllersAsServices();
 
 builder.Services.AddEndpointsApiExplorer();
 
-builder.Services.Configure<ApiConfig>(options =>
-    {
-#pragma warning disable CS8601
-        options.AccessToken= builder.Configuration.GetSection("MongoConnection:ConnectionString").Value;
-
-        options.BaseUrl=builder.Configuration.GetSection("MongoConnection:Database").Value;
-#pragma warning restore CS8601
-    }
-);
 
 
 
 
-builder.Services.Configure<RMQOptions>(options =>
+
+builder.Services.Configure<RmqOptions>(options =>
     {
         options.Port = Convert.ToInt32(builder.Configuration.GetSection("RabbitMq:Port").Value);
         options.HostName = builder.Configuration.GetSection("RabbitMq:Host").Value!;
@@ -91,8 +80,7 @@ builder.Services.AddCors(options =>
 
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(Program).Assembly));
 
-builder.Services.AddSingleton<IApiConfig>(sp =>
-    sp.GetRequiredService<IOptions<ApiConfig>>().Value);
+
 
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
@@ -101,12 +89,6 @@ builder.Services.AddSingleton<IHttpService, HttpService>();
 builder.Services.AddSingleton<IRmqSender, RmqSender>();
 
 builder.Services.AddSingleton<IEventContext,EventContext>();
-
-builder.Services.AddSingleton<IImageContext, ImageContext>();
-
-builder.Services.AddSingleton<IAreaContext, AreaContext>();
-
-builder.Services.AddSingleton<ITicketContext,TicketContext>();
 
 builder.Services.AddSingleton<IMongoDbContext, MongoDbContext>();
 
@@ -124,7 +106,7 @@ builder.Services
     .AddJwtBearer(options =>
     {
         options.RequireHttpsMetadata=false;
-        options.TokenValidationParameters = new TokenValidationParameters()
+        options.TokenValidationParameters = new TokenValidationParameters
         {
             
             ValidateIssuer = true,
@@ -135,7 +117,7 @@ builder.Services
             ValidAudience = "MyAuthClient",
             IssuerSigningKey = new SymmetricSecurityKey(
                 Encoding.UTF8.GetBytes("mysupersecret_secretkey!123")
-            ),
+            )
         };
     }); 
 
@@ -161,7 +143,7 @@ app.UseCookiePolicy(new CookiePolicyOptions
 {
     MinimumSameSitePolicy = SameSiteMode.None,
     HttpOnly = HttpOnlyPolicy.Always,
-    Secure = CookieSecurePolicy.None,
+    Secure = CookieSecurePolicy.None
 });
 
 app.UseAuthentication();

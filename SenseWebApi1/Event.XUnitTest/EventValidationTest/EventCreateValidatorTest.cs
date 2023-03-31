@@ -1,8 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Logging;
-using SenseWebApi1.Context;
+﻿
 using SenseWebApi1.Features.EventFeature.CreateEvent;
-using SenseWebApi1.Services;
+
 
 namespace Event.XUnitTest.EventValidationTest;
 
@@ -12,7 +10,7 @@ public class EventCreateValidatorTest
 
     public async void EventCreateValidationTest()
     {
-        var testObj = new EventCreateCommand()
+        var testObj = new EventCreateCommand
         {
             EventName = "Event-1",
             Description = "Какое то мероприятие 1",
@@ -22,10 +20,7 @@ public class EventCreateValidatorTest
             ImageId = Guid.Parse("bda59f4e-c60b-411b-87e5-61a73125979b"),
             IsHavePlaces = true
         };
-         ILogger<HttpService> logger=new Logger<HttpService>(new LoggerFactory());
-        IHttpContextAccessor contextAccessor=new HttpContextAccessor();
-        IHttpService httpService =new HttpService(contextAccessor,logger);
-        var validator = new EventCreateValidator(new AreaContext(httpService), new ImageContext(httpService));
+        var validator = new EventCreateValidator();
         var validationResult=await validator.ValidateAsync(testObj);
         if (!validationResult.IsValid)
         {

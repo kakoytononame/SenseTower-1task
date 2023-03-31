@@ -1,9 +1,9 @@
 ﻿// ReSharper disable once CheckNamespace
 namespace PaymentAPI.Controllers;
 
-public enum Enums
+public enum PaymentEnum
 {
-    Hold=1,
-    Confirmed=2,
-    Canceled=3
+    Hold,
+    Confirmed,
+    Canceled
 }

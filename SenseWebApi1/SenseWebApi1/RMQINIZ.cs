@@ -36,11 +36,6 @@ public static class RMQINIZ
         
         
         var channel = connection.CreateModel();
-        channel.QueueDeclare("events",
-            durable: true,
-            exclusive: false,
-            autoDelete: false,
-            arguments: null);
         channel.QueueDeclare("deletedevents",
             durable: true,
             exclusive: false,

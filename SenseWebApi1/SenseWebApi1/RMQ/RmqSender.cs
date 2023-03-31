@@ -1,5 +1,4 @@
 ﻿using System.Text;
-using ImageAPI;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using RabbitMQ.Client;
@@ -10,10 +9,10 @@ public class RmqSender:IRmqSender
 {
     private readonly IModel _channel;
     // ReSharper disable once PrivateFieldCanBeConvertedToLocalVariable
-    private readonly IOptions<RMQOptions> _options;
+    private readonly IOptions<RmqOptions> _options;
     
 
-    public RmqSender(IOptions<RMQOptions> options)
+    public RmqSender(IOptions<RmqOptions> options)
     {
         _options = options;
         

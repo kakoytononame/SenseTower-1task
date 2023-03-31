@@ -2,9 +2,9 @@
 
 public interface IHttpService
 {
-    Task<string> GetImages(string tocken);
+    Task<string?> GetImages(Guid id);
 
-    Task<string> GetSpaces(string tocken);
+    Task<string?> GetSpaces(Guid id);
 
     Task<HttpResponseMessage> CreateTransaction(Guid ownerId, CancellationToken cancellationToken);
     

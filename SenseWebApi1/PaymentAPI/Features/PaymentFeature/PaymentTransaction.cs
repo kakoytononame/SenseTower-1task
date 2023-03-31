@@ -9,7 +9,7 @@ public class PaymentTransaction
     public Guid Id { get; set; }
     
     // ReSharper disable once UnusedAutoPropertyAccessor.Global
-    public Enums State { get; set; }
+    public PaymentEnum State { get; set; }
     // ReSharper disable once UnusedAutoPropertyAccessor.Global
     public DateTime DateCreation { get; set; }
     // ReSharper disable once UnusedAutoPropertyAccessor.Global

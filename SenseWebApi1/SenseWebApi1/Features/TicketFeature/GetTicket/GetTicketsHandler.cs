@@ -1,19 +1,36 @@
 ﻿using MediatR;
-using SenseWebApi1.Context;
+using MongoDB.Driver;
+using SC.Internship.Common.Exceptions;
+using SenseWebApi1.Features.EventFeature;
+using SenseWebApi1.MongoDB;
 
-namespace SenseWebApi1.Features.TicketFeature.GetTicket
+namespace SenseWebApi1.Features.TicketFeature.GetTicket;
+
+// ReSharper disable once UnusedType.Global
+public class GetTicketsHandler : IRequestHandler<GetTicketsCommand, List<Ticket>>
 {
-    public class GetTicketsHandler : IRequestHandler<GetTicketsCommand, List<Ticket>>
+        
+    private readonly IMongoDbContext _databaseContext;
+    public GetTicketsHandler(IMongoDbContext databaseContext)
     {
-        private readonly ITicketContext _ticketContext;
-        public GetTicketsHandler(ITicketContext ticketContext)
+                
+        _databaseContext = databaseContext;
+    }
+    public async Task<List<Ticket>> Handle(GetTicketsCommand request, CancellationToken cancellationToken)
+    {
+        var mongoCollection = _databaseContext.GetMongoDatabase().GetCollection<Event>("Events");
+            
+        var eventObj = await mongoCollection.Find(p => p.EventId==request.EventId).FirstOrDefaultAsync(cancellationToken: cancellationToken);
+
+        if (eventObj == null)
         {
-                _ticketContext = ticketContext;
+            throw new ScException("Такого мероприятия нет");
         }
-        public async Task<List<Ticket>> Handle(GetTicketsCommand request, CancellationToken cancellationToken)
-        {
-            var result =_ticketContext.GetTickets(request.EventId);
-            return await result;
-        }
+            
+        var tickets =  eventObj.Tickets;
+    
+        return tickets!;
+            
+            
     }
 }

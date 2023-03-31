@@ -18,7 +18,7 @@ builder.Services
     .AddJwtBearer(options =>
     {
         options.RequireHttpsMetadata=false;
-        options.TokenValidationParameters = new TokenValidationParameters()
+        options.TokenValidationParameters = new TokenValidationParameters
         {
             
             ValidateIssuer = true,
@@ -29,7 +29,7 @@ builder.Services
             ValidAudience = "MyAuthClient",
             IssuerSigningKey = new SymmetricSecurityKey(
                 Encoding.UTF8.GetBytes("mysupersecret_secretkey!123")
-            ),
+            )
         };
     }); 
 
@@ -38,15 +38,11 @@ var app = builder.Build();
 app.Use(async (context, next) =>
 {
 
-    using StreamReader sr = new StreamReader(context.Request.Body,Encoding.UTF8, true, 1024, true);
+    using var sr = new StreamReader(context.Request.Body,Encoding.UTF8, true, 1024, true);
     // ReSharper disable once IdentifierTypo
     var bodystring = await sr.ReadToEndAsync();
     // ReSharper disable once IdentifierTypo
-    var headerstring = "";
-    foreach (var item in context.Request.Headers)
-    {
-        headerstring += $"{item.Key}={item.Value}\n";
-    }
+    var headerstring = context.Request.Headers.Aggregate("", (current, item) => current + $"{item.Key}={item.Value}\n");
     app.Logger.LogInformation("Request {0} \n {1} \n {2} ", context.Request.Method,bodystring,headerstring);
     await next.Invoke();
 });

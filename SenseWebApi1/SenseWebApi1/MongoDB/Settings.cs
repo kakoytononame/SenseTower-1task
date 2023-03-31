@@ -1,9 +1,8 @@
-﻿namespace SenseWebApi1.MongoDB
+﻿namespace SenseWebApi1.MongoDB;
+
+public class Settings
 {
-    public class Settings
-    {
-        public string ?ConnectionString;
-        public string ?Database;
+    public string ?ConnectionString;
+    public string ?Database;
         
-    }
 }

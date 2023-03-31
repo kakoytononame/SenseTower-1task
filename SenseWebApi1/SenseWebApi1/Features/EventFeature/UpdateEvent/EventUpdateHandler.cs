@@ -1,28 +1,48 @@
 ﻿using AutoMapper;
 using MediatR;
-using SenseWebApi1.Context;
+using MongoDB.Driver;
+using SenseWebApi1.MongoDB;
 
-namespace SenseWebApi1.Features.EventFeature.UpdateEvent
+
+namespace SenseWebApi1.Features.EventFeature.UpdateEvent;
+
+// ReSharper disable once UnusedType.Global
+public class EventUpdateHandler : IRequestHandler<EventUpdateCommand, EventDto>
 {
-    // ReSharper disable once UnusedType.Global
-    public class EventUpdateHandler : IRequestHandler<EventUpdateCommand, EventUpdateDto>
+       
+    private readonly IMapper _mapper;
+    private readonly IMongoDbContext _databaseContext;
+    public EventUpdateHandler( IMapper mapper,IMongoDbContext databaseContext)
     {
-        private readonly IEventContext _eventContext;
-        private readonly IMapper _mapper;
+            
+        _mapper = mapper;
+        _databaseContext = databaseContext;
 
-        public EventUpdateHandler(IEventContext eventContext, IMapper mapper)
+    }
+    public async Task<EventDto> Handle(EventUpdateCommand request, CancellationToken cancellationToken)
+    {
+        var mongoCollection = _databaseContext.GetMongoDatabase().GetCollection<Event>("Events");
+        var filter = Builders<Event>.Filter
+            .Where(p=>p.EventId==request.EventId);
+        var eventObj =  mongoCollection.Find(filter).FirstOrDefault();
+        if (eventObj == null)
         {
-            _eventContext = eventContext;
-            _mapper = mapper;
-
-
+            throw new Exception("Такого события нет");
         }
-        public async Task<EventUpdateDto> Handle(EventUpdateCommand request, CancellationToken cancellationToken)
-        {
-            var updateEvent = _mapper.Map<EventUpdateCommand, Event>(request);
-            await _eventContext.UpdateEvent(updateEvent);
-            var result = _mapper.Map<Event, EventUpdateDto>(updateEvent);
-            return result;
-        }
+        var update = Builders<Event>.Update
+                    
+            .Set(p => p.Beginning, request.Beginning)
+            .Set(p => p.End, request.End)
+            .Set(p => p.AreaId, request.AreaId)
+            .Set(p => p.Description, request.Description)
+            .Set(p => p.ImageId, request.ImageId)
+            .Set(p => p.IsHavePlaces, request.IsHavePlaces)
+            .Set(p=>p.Cost,request.Cost);
+        await mongoCollection.UpdateOneAsync(filter, update, cancellationToken: cancellationToken);
+            
+        var updateEvent = _mapper.Map<EventUpdateCommand, Event>(request);
+        var result = _mapper.Map<Event, EventDto>(updateEvent);
+        return result;
+            
     }
 }

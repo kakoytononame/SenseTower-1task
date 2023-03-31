@@ -1,6 +1,6 @@
-﻿namespace ImageAPI;
+﻿namespace SenseWebApi1.RMQ;
 
-public class RMQOptions
+public class RmqOptions
 {
 #pragma warning disable CS8618
     public string HostName { get; set; }
